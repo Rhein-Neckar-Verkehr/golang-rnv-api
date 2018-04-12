@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>stationMonitor.go</title>
+<meta charset="utf-8"/>
+<style type="text/css">body {
+    background: rgb(225, 225, 225);
+    margin: 0px;
+    padding: 0px;
+}
+
+#docgo p {
+    margin-top: 0px;
+    margin-right: 0px;
+    margin-bottom: 15px;
+    margin-left: 0px;
+}
+
+#docgo div {
+    display: inline;
+}
+
+#docgo #background {
+    position: fixed;
+    top: 0; left: 525px; right: 0; bottom: 0;
+    background: rgb(47, 47, 47);
+    border-left: 1px solid #e5e5ee;
+    z-index: -1;
+}
+
+#docgo .keyword {
+    color: rgb(250, 200, 100);
+}
+
+#docgo .literal {
+    color: rgb(140, 190, 100);
+}
+
+#docgo .ident {
+    color: white;
+}
+
+#docgo .operator {
+    color: white;
+}
+
+#docgo .comment {
+}
+
+#docgo h1, h2, h3, h4, h5 {
+    text-align: left;
+    margin-top: 0px;
+    margin-right: 0px;
+    margin-bottom: 15px;
+    margin-left: 0px;
+}
+
+#docgo h1 {
+    margin-top: 40px;
+}
+
+#docgo .doc {
+    vertical-align: top;
+    font-family: 'Palatino Linotype', 'Book Antiqua', Palatino, FreeSerif, serif;
+    font-size: 15px;
+    line-height: 22px;
+    color: black;
+    min-width: 450px;
+    max-width: 450px;
+    padding-top: 10px;
+    padding-right: 25px;
+    padding-bottom: 1px;
+    padding-left: 50px;
+    overflow-x: hidden;
+}
+
+#docgo .code {
+    min-width: 650px;
+    max-width: 650px;
+    padding-left: 25px;
+    padding-right: 15px;
+    border-left: 1px;
+    overflow-x: hidden;
+    vertical-align: top;
+}
+
+#docgo .code pre code  {
+    font-size: 12px;
+    line-height: 18px;
+    font-family: Menlo, Monaco, Consolas, "Lucida Console", monospace;
+    color: rgb(120, 120, 120);
+}
+</style>
+</head>
+<body>
+<div id="docgo">
+  <div id="background"></div>
+  <table>
+    <thead><tr><th class="doc"><h1>stationMonitor.go</h1></th><th class="code"></th></tr></thead>
+    <tbody>
+      
+      <tr class="section">
+	<td class="doc"><h1>Interfaces from rnv Start.Info API</h1>
+
+<pre><code>- Haltestellenmonitor
+</code></pre>
+</td>
+	<td class="code"><pre><code><div class="keyword">package</div> <div class="ident">api</div><div class="operator"></div>
+<div class="keyword">import</div> <div class="operator">(</div>
+	<div class="literal">&#34;io/ioutil&#34;</div><div class="operator"></div>
+	<div class="literal">&#34;time&#34;</div><div class="operator"></div>
+	<div class="literal">&#34;strings&#34;</div><div class="operator"></div>
+	<div class="literal">&#34;strconv&#34;</div><div class="operator"></div>
+	<div class="literal">&#34;errors&#34;</div><div class="operator"></div>
+	<div class="literal">&#34;log&#34;</div><div class="operator"></div>
+<div class="operator">)</div><div class="operator"></div>
+</code></pre></td>
+      </tr>
+      
+      <tr class="section">
+	<td class="doc"></td>
+	<td class="code"><pre><code>
+<div class="keyword">const</div> <div class="ident">TICKER_START_AND_END_IDENTIFIER</div> <div class="ident">string</div><div class="operator">=</div><div class="literal">&#34;***&#34;</div><div class="operator"></div>
+</code></pre></td>
+      </tr>
+      
+      <tr class="section">
+	<td class="doc"><p>Enumerations for Response Object Attributes for this Interface</p>
+</td>
+	<td class="code"><pre><code>
+<div class="keyword">const</div> <div class="ident">KIND_OF_TOUR_PLANNED</div> <div class="ident">string</div><div class="operator">=</div><div class="literal">&#34;452&#34;</div><div class="operator"></div>
+<div class="keyword">const</div> <div class="ident">KIND_OF_TOUR_REALTIME_DATA</div> <div class="ident">string</div><div class="operator">=</div><div class="literal">&#34;454AUS&#34;</div><div class="operator"></div>
+<div class="keyword">const</div> <div class="ident">KIND_OF_TOUR_PLANNED_DAILY</div> <div class="ident">string</div><div class="operator">=</div><div class="literal">&#34;454REFAUS&#34;</div><div class="operator"></div>
+</code></pre></td>
+      </tr>
+      
+      <tr class="section">
+	<td class="doc"></td>
+	<td class="code"><pre><code><div class="keyword">const</div> <div class="ident">TRANSPORTATION_STRAB</div> <div class="ident">string</div><div class="operator">=</div><div class="literal">&#34;STRAB&#34;</div><div class="operator"></div>
+<div class="keyword">const</div> <div class="ident">TRANSPORTATION_KOM</div> <div class="ident">string</div><div class="operator">=</div><div class="literal">&#34;KOM&#34;</div><div class="operator"></div>
+<div class="keyword">const</div> <div class="ident">TRANSPORTATION_WEBU</div> <div class="ident">string</div><div class="operator">=</div><div class="literal">&#34;WEBU&#34;</div><div class="operator"></div>
+</code></pre></td>
+      </tr>
+      
+      <tr class="section">
+	<td class="doc"></td>
+	<td class="code"><pre><code><div class="keyword">const</div> <div class="ident">STATUS_OK</div> <div class="ident">string</div><div class="operator">=</div><div class="literal">&#34;OK&#34;</div><div class="operator"></div>
+<div class="keyword">const</div> <div class="ident">STATUS_CANCELLED</div> <div class="ident">string</div><div class="operator">=</div><div class="literal">&#34;CANCELLED&#34;</div><div class="operator"></div>
+
+</code></pre></td>
+      </tr>
+      
+      <tr class="section">
+	<td class="doc"><h2>Parameter</h2>
+
+<p>TODO move this stuff values for Fahrtverlauf</p>
+</td>
+	<td class="code"><pre><code>
+<div class="keyword">var</div> <div class="ident">index</div> <div class="ident">string</div><div class="operator">=</div><div class="literal">&#34;0&#34;</div>	<div class="operator"></div>
+</code></pre></td>
+      </tr>
+      
+      <tr class="section">
+	<td class="doc"></td>
+	<td class="code"><pre><code><div class="keyword">var</div> <div class="ident">time_default</div> <div class="ident">string</div><div class="operator">=</div><div class="literal">&#34;null&#34;</div><div class="operator"></div>
+</code></pre></td>
+      </tr>
+      
+      <tr class="section">
+	<td class="doc"></td>
+	<td class="code"><pre><code><div class="keyword">var</div> <div class="ident">supportedModes</div> <div class="operator">=</div><div class="operator">[</div><div class="literal">2</div><div class="operator">]</div><div class="ident">string</div><div class="operator">{</div><div class="literal">&#34;DEP&#34;</div><div class="operator">,</div><div class="literal">&#34;ARR&#34;</div><div class="operator">}</div> <div class="operator"></div><div class="comment">//default is DEP</div>
+</code></pre></td>
+      </tr>
+      
+      <tr class="section">
+	<td class="doc"></td>
+	<td class="code"><pre><code><div class="keyword">func</div> <div class="ident">GetSupportedModes</div><div class="operator">(</div><div class="operator">)</div><div class="operator">[</div><div class="literal">2</div><div class="operator">]</div><div class="ident">string</div><div class="operator">{</div><div class="keyword">return</div> <div class="ident">supportedModes</div><div class="operator">}</div><div class="operator"></div>
+<div class="keyword">const</div> <div class="ident">ERROR_MODE</div> <div class="ident">string</div><div class="operator">=</div><div class="ident">ERROR_START</div><div class="operator">&#43;</div><div class="literal">&#34; JourneyParams.Mode&#34;</div><div class="operator"></div>
+<div class="keyword">const</div> <div class="ident">CATCH_ERROR_MSG_MODE</div><div class="operator">=</div><div class="ident">CATCH_ERROR_MSG_START</div><div class="operator">&#43;</div><div class="literal">&#34; JourneyParams.Mode: DEP&#34;</div><div class="operator"></div>
+</code></pre></td>
+      </tr>
+      
+      <tr class="section">
+	<td class="doc"></td>
+	<td class="code"><pre><code><div class="keyword">var</div> <div class="ident">supportedNeedPlatformDetail</div> <div class="operator">=</div><div class="ident">booleanA</div> <div class="operator"></div><div class="comment">// default is false</div>
+<div class="keyword">func</div> <div class="ident">GetSupportedNeedPlatformDetail</div><div class="operator">(</div><div class="operator">)</div><div class="operator">[</div><div class="literal">2</div><div class="operator">]</div><div class="ident">string</div><div class="operator">{</div><div class="keyword">return</div> <div class="ident">supportedNeedPlatformDetail</div><div class="operator">}</div><div class="operator"></div>
+<div class="keyword">const</div> <div class="ident">ERROR_NEED_PLATFORM_DETAIL</div> <div class="ident">string</div><div class="operator">=</div><div class="ident">ERROR_START</div><div class="operator">&#43;</div><div class="literal">&#34; JourneyParams.NeedPlatformDetail&#34;</div><div class="operator"></div>
+<div class="keyword">const</div> <div class="ident">CATCH_ERROR_MSG_NEED_PLATFORM_DETAIL</div><div class="operator">=</div><div class="ident">CATCH_ERROR_MSG_START</div><div class="operator">&#43;</div><div class="literal">&#34; JourneyParams.NeedPlatformDetail: false&#34;</div><div class="operator"></div>
+
+</code></pre></td>
+      </tr>
+      
+      <tr class="section">
+	<td class="doc"></td>
+	<td class="code"><pre><code>
+<div class="keyword">type</div> <div class="ident">JourneyParams</div> <div class="keyword">struct</div><div class="operator">{</div>
+</code></pre></td>
+      </tr>
+      
+      <tr class="section">
+	<td class="doc"><p>NOTE hafasId=116$-1&amp;transportFilter=4&amp;time=null&amp;uiSource=LINE illegal api access</p>
+</td>
+	<td class="code"><pre><code>    <div class="ident">HafasId</div> <div class="ident">string</div> <div class="operator"></div><div class="comment">// required</div>
+    <div class="ident">Time</div> <div class="operator">*</div><div class="ident">string</div>    <div class="operator"></div>
+</code></pre></td>
+      </tr>
+      
+      <tr class="section">
+	<td class="doc"><p>NOTE UiSource *string field from illegal api access</p>
+</td>
+	<td class="code"><pre><code>    <div class="ident">Poles</div> <div class="operator">*</div><div class="operator">[</div><div class="operator">]</div><div class="ident">string</div><div class="operator"></div>
+    <div class="ident">Mode</div> <div class="ident">string</div> <div class="operator"></div><div class="comment">// use default values</div>
+    <div class="ident">NeedPlatformDetail</div> <div class="ident">string</div> <div class="operator"></div><div class="comment">// use default values</div>
+    <div class="ident">TransportFilter</div> <div class="operator">*</div><div class="ident">string</div> <div class="operator"></div>
+<div class="operator">}</div><div class="operator"></div>
+</code></pre></td>
+      </tr>
+      
+      <tr class="section">
+	<td class="doc"></td>
+	<td class="code"><pre><code><div class="keyword">func</div> <div class="ident">NewJourneyParams</div><div class="operator">(</div><div class="ident">hafasId</div> <div class="ident">string</div><div class="operator">)</div><div class="operator">(</div><div class="ident">JourneyParams</div><div class="operator">,</div><div class="ident">error</div><div class="operator">)</div><div class="operator">{</div>
+	<div class="ident">err</div><div class="operator">:=</div><div class="ident">validateStationId</div><div class="operator">(</div><div class="ident">hafasId</div><div class="operator">)</div><div class="operator"></div>
+	<div class="keyword">if</div> <div class="ident">err</div><div class="operator">!=</div><div class="ident">nil</div> <div class="operator">{</div><div class="ident">hafasId</div><div class="operator">=</div><div class="literal">&#34;1125&#34;</div><div class="operator">}</div><div class="operator"></div>
+	<div class="keyword">return</div> <div class="ident">JourneyParams</div><div class="operator">{</div><div class="ident">hafasId</div><div class="operator">,</div><div class="operator">&amp;</div><div class="ident">time_default</div><div class="operator">,</div><div class="ident">nil</div><div class="operator">,</div><div class="ident">supportedModes</div><div class="operator">[</div><div class="literal">0</div><div class="operator">]</div><div class="operator">,</div><div class="ident">supportedNeedPlatformDetail</div><div class="operator">[</div><div class="literal">1</div><div class="operator">]</div><div class="operator">,</div><div class="ident">nil</div><div class="operator">}</div><div class="operator">,</div><div class="ident">err</div><div class="operator"></div>
+<div class="operator">}</div><div class="operator"></div>
+</code></pre></td>
+      </tr>
+      
+      <tr class="section">
+	<td class="doc"></td>
+	<td class="code"><pre><code>
+<div class="keyword">func</div> <div class="operator">(</div><div class="ident">params</div> <div class="operator">*</div><div class="ident">JourneyParams</div><div class="operator">)</div><div class="ident">SetTransportFilter</div><div class="operator">(</div><div class="ident">lineLabel</div> <div class="ident">string</div><div class="operator">)</div><div class="ident">error</div><div class="operator">{</div>
+	<div class="ident">err</div><div class="operator">:=</div><div class="ident">validateLine</div><div class="operator">(</div><div class="ident">lineLabel</div><div class="operator">)</div><div class="operator"></div>
+	<div class="keyword">if</div> <div class="ident">err</div><div class="operator">==</div><div class="ident">nil</div> <div class="operator">{</div><div class="ident">params</div><div class="operator">.</div><div class="ident">TransportFilter</div><div class="operator">=</div><div class="operator">&amp;</div><div class="ident">lineLabel</div><div class="operator">}</div><div class="operator"></div>
+	<div class="keyword">return</div> <div class="ident">err</div><div class="operator"></div>
+<div class="operator">}</div><div class="operator"></div>
+</code></pre></td>
+      </tr>
+      
+      <tr class="section">
+	<td class="doc"></td>
+	<td class="code"><pre><code>
+<div class="keyword">func</div> <div class="operator">(</div><div class="ident">params</div> <div class="ident">JourneyParams</div><div class="operator">)</div><div class="ident">String</div><div class="operator">(</div><div class="operator">)</div><div class="ident">string</div><div class="operator">{</div>
+	<div class="ident">result</div><div class="operator">:=</div><div class="literal">&#34;{&#34;</div><div class="operator">&#43;</div><div class="ident">params</div><div class="operator">.</div><div class="ident">HafasId</div><div class="operator">&#43;</div><div class="literal">&#34; &#34;</div><div class="operator"></div>
+	<div class="keyword">if</div> <div class="ident">params</div><div class="operator">.</div><div class="ident">Time</div><div class="operator">!=</div><div class="ident">nil</div> <div class="operator">{</div><div class="ident">result</div><div class="operator">=</div><div class="ident">result</div><div class="operator">&#43;</div><div class="operator">*</div><div class="ident">params</div><div class="operator">.</div><div class="ident">Time</div><div class="operator">&#43;</div><div class="literal">&#34; &#34;</div><div class="operator">}</div> <div class="keyword">else</div> <div class="operator">{</div><div class="ident">result</div><div class="operator">=</div><div class="ident">result</div><div class="operator">&#43;</div><div class="literal">&#34;&lt;nil&gt; &#34;</div><div class="operator">}</div><div class="operator"></div>
+	<div class="keyword">if</div> <div class="ident">params</div><div class="operator">.</div><div class="ident">Poles</div><div class="operator">!=</div><div class="ident">nil</div> <div class="operator">{</div><div class="ident">result</div><div class="operator">=</div><div class="ident">result</div><div class="operator">&#43;</div><div class="ident">arrayToString</div><div class="operator">(</div><div class="operator">*</div><div class="ident">params</div><div class="operator">.</div><div class="ident">Poles</div><div class="operator">)</div><div class="operator">&#43;</div><div class="literal">&#34; &#34;</div><div class="operator">}</div> <div class="keyword">else</div> <div class="operator">{</div><div class="ident">result</div><div class="operator">=</div><div class="ident">result</div><div class="operator">&#43;</div><div class="literal">&#34;&lt;nil&gt; &#34;</div><div class="operator">}</div><div class="operator"></div>
+	<div class="ident">result</div><div class="operator">=</div><div class="ident">result</div><div class="operator">&#43;</div><div class="ident">params</div><div class="operator">.</div><div class="ident">Mode</div><div class="operator">&#43;</div><div class="literal">&#34; &#34;</div><div class="operator">&#43;</div><div class="ident">params</div><div class="operator">.</div><div class="ident">NeedPlatformDetail</div><div class="operator">&#43;</div><div class="literal">&#34; &#34;</div> <div class="operator"></div>
+	<div class="keyword">if</div> <div class="ident">params</div><div class="operator">.</div><div class="ident">TransportFilter</div><div class="operator">!=</div><div class="ident">nil</div> <div class="operator">{</div><div class="ident">result</div><div class="operator">=</div><div class="ident">result</div><div class="operator">&#43;</div><div class="operator">*</div><div class="ident">params</div><div class="operator">.</div><div class="ident">TransportFilter</div><div class="operator">}</div> <div class="keyword">else</div> <div class="operator">{</div><div class="ident">result</div><div class="operator">=</div><div class="ident">result</div><div class="operator">&#43;</div><div class="literal">&#34;&lt;nil&gt;&#34;</div><div class="operator">}</div><div class="operator"></div>
+	<div class="keyword">return</div> <div class="ident">result</div><div class="operator">&#43;</div><div class="literal">&#34;}&#34;</div><div class="operator"></div>
+<div class="operator">}</div><div class="operator"></div>
+</code></pre></td>
+      </tr>
+      
+      <tr class="section">
+	<td class="doc"></td>
+	<td class="code"><pre><code>
+<div class="keyword">func</div> <div class="operator">(</div><div class="ident">params</div> <div class="operator">*</div><div class="ident">JourneyParams</div><div class="operator">)</div><div class="ident">Validate</div><div class="operator">(</div><div class="operator">)</div><div class="ident">error</div><div class="operator">{</div>
+	<div class="ident">err</div><div class="operator">:=</div><div class="ident">validateStationId</div><div class="operator">(</div><div class="ident">params</div><div class="operator">.</div><div class="ident">HafasId</div><div class="operator">)</div><div class="operator"></div>
+	<div class="keyword">if</div> <div class="ident">err</div><div class="operator">!=</div><div class="ident">nil</div><div class="operator">{</div>
+		<div class="keyword">return</div> <div class="ident">err</div><div class="operator"></div>
+	<div class="operator">}</div><div class="operator"></div>
+	<div class="keyword">if</div> <div class="ident">params</div><div class="operator">.</div><div class="ident">Mode</div> <div class="operator">!=</div> <div class="ident">supportedModes</div><div class="operator">[</div><div class="literal">0</div><div class="operator">]</div> <div class="operator">&amp;&amp;</div> <div class="ident">params</div><div class="operator">.</div><div class="ident">Mode</div> <div class="operator">!=</div> <div class="ident">supportedModes</div><div class="operator">[</div><div class="literal">1</div><div class="operator">]</div><div class="operator">{</div>
+		<div class="ident">params</div><div class="operator">.</div><div class="ident">Mode</div><div class="operator">=</div><div class="ident">supportedModes</div><div class="operator">[</div><div class="literal">0</div><div class="operator">]</div><div class="operator"></div>
+		<div class="keyword">return</div> <div class="ident">errors</div><div class="operator">.</div><div class="ident">New</div><div class="operator">(</div><div class="ident">ERROR_MODE</div><div class="operator">)</div><div class="operator"></div>
+	<div class="operator">}</div> <div class="operator"></div>
+	<div class="keyword">if</div> <div class="ident">params</div><div class="operator">.</div><div class="ident">NeedPlatformDetail</div> <div class="operator">!=</div> <div class="ident">supportedNeedPlatformDetail</div><div class="operator">[</div><div class="literal">0</div><div class="operator">]</div> <div class="operator">&amp;&amp;</div> <div class="ident">params</div><div class="operator">.</div><div class="ident">NeedPlatformDetail</div> <div class="operator">!=</div> <div class="ident">supportedNeedPlatformDetail</div><div class="operator">[</div><div class="literal">1</div><div class="operator">]</div><div class="operator">{</div>
+		<div class="ident">params</div><div class="operator">.</div><div class="ident">NeedPlatformDetail</div><div class="operator">=</div><div class="ident">supportedNeedPlatformDetail</div><div class="operator">[</div><div class="literal">1</div><div class="operator">]</div><div class="operator"></div>
+		<div class="keyword">return</div> <div class="ident">errors</div><div class="operator">.</div><div class="ident">New</div><div class="operator">(</div><div class="ident">ERROR_NEED_PLATFORM_DETAIL</div><div class="operator">)</div><div class="operator"></div>
+	<div class="operator">}</div> <div class="operator"></div>
+	<div class="keyword">if</div> <div class="ident">params</div><div class="operator">.</div><div class="ident">Time</div><div class="operator">==</div><div class="ident">nil</div> <div class="operator">{</div>
+		<div class="keyword">return</div> <div class="ident">nil</div><div class="operator"></div>
+	<div class="operator">}</div><div class="operator"></div>
+	<div class="keyword">if</div> <div class="operator">*</div><div class="ident">params</div><div class="operator">.</div><div class="ident">Time</div><div class="operator">==</div><div class="ident">time_default</div> <div class="operator">{</div>
+		<div class="keyword">return</div> <div class="ident">nil</div><div class="operator"></div>
+	<div class="operator">}</div><div class="operator"></div>
+	<div class="keyword">return</div> <div class="ident">validateTimeAsString</div><div class="operator">(</div><div class="operator">*</div><div class="ident">params</div><div class="operator">.</div><div class="ident">Time</div><div class="operator">)</div><div class="operator"></div>
+<div class="operator">}</div><div class="operator"></div>
+</code></pre></td>
+      </tr>
+      
+      <tr class="section">
+	<td class="doc"></td>
+	<td class="code"><pre><code>
+<div class="keyword">func</div> <div class="operator">(</div><div class="ident">params</div> <div class="operator">*</div><div class="ident">JourneyParams</div><div class="operator">)</div><div class="ident">GetAsUrlParams</div><div class="operator">(</div><div class="operator">)</div><div class="operator">(</div><div class="keyword">map</div><div class="operator">[</div><div class="ident">string</div><div class="operator">]</div><div class="operator">[</div><div class="operator">]</div><div class="ident">string</div><div class="operator">,</div><div class="ident">error</div><div class="operator">,</div><div class="ident">bool</div><div class="operator">)</div><div class="operator">{</div>
+	<div class="ident">err</div><div class="operator">:=</div><div class="ident">params</div><div class="operator">.</div><div class="ident">Validate</div><div class="operator">(</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">par</div> <div class="operator">:=</div><div class="ident">make</div><div class="operator">(</div><div class="keyword">map</div><div class="operator">[</div><div class="ident">string</div><div class="operator">]</div><div class="operator">[</div><div class="operator">]</div><div class="ident">string</div><div class="operator">)</div><div class="operator"></div>
+</code></pre></td>
+      </tr>
+      
+      <tr class="section">
+	<td class="doc"><p>catch Mode and needPlatformDetail errors</p>
+</td>
+	<td class="code"><pre><code>	<div class="keyword">if</div> <div class="ident">err</div><div class="operator">==</div><div class="ident">errors</div><div class="operator">.</div><div class="ident">New</div><div class="operator">(</div><div class="ident">ERROR_MODE</div><div class="operator">)</div> <div class="operator">{</div>
+		<div class="ident">log</div><div class="operator">.</div><div class="ident">Println</div><div class="operator">(</div><div class="ident">CATCH_ERROR_MSG_MODE</div><div class="operator">)</div><div class="operator"></div>
+		<div class="ident">params</div><div class="operator">.</div><div class="ident">Mode</div><div class="operator">=</div><div class="ident">supportedModes</div><div class="operator">[</div><div class="literal">0</div><div class="operator">]</div><div class="operator"></div>
+		<div class="ident">err</div><div class="operator">=</div><div class="ident">nil</div><div class="operator"></div>
+	<div class="operator">}</div><div class="operator"></div>
+	<div class="keyword">if</div> <div class="ident">err</div><div class="operator">==</div><div class="ident">errors</div><div class="operator">.</div><div class="ident">New</div><div class="operator">(</div><div class="ident">ERROR_NEED_PLATFORM_DETAIL</div><div class="operator">)</div> <div class="operator">{</div>
+		<div class="ident">log</div><div class="operator">.</div><div class="ident">Println</div><div class="operator">(</div><div class="ident">CATCH_ERROR_MSG_NEED_PLATFORM_DETAIL</div><div class="operator">)</div><div class="operator"></div>
+		<div class="ident">params</div><div class="operator">.</div><div class="ident">NeedPlatformDetail</div><div class="operator">=</div><div class="ident">supportedNeedPlatformDetail</div><div class="operator">[</div><div class="literal">1</div><div class="operator">]</div><div class="operator"></div>
+		<div class="ident">err</div><div class="operator">=</div><div class="ident">nil</div><div class="operator"></div>
+	<div class="operator">}</div><div class="operator"></div>
+	<div class="keyword">if</div> <div class="operator">(</div><div class="ident">err</div><div class="operator">!=</div><div class="ident">nil</div><div class="operator">)</div><div class="operator">{</div>
+		<div class="keyword">return</div> <div class="ident">par</div><div class="operator">,</div><div class="ident">err</div><div class="operator">,</div><div class="ident">false</div><div class="operator"></div>
+	<div class="operator">}</div><div class="operator"></div>
+	<div class="keyword">var</div> <div class="ident">addTimeManually</div> <div class="ident">bool</div><div class="operator"></div>
+    <div class="ident">par</div><div class="operator">[</div><div class="literal">&#34;hafasID&#34;</div><div class="operator">]</div><div class="operator">=</div><div class="operator">[</div><div class="operator">]</div><div class="ident">string</div><div class="operator">{</div><div class="ident">params</div><div class="operator">.</div><div class="ident">HafasId</div><div class="operator">}</div><div class="operator"></div>
+    <div class="keyword">if</div><div class="operator">(</div><div class="operator">*</div><div class="ident">params</div><div class="operator">.</div><div class="ident">Time</div><div class="operator">==</div><div class="ident">time_default</div><div class="operator">)</div><div class="operator">{</div>
+       <div class="ident">par</div><div class="operator">[</div><div class="literal">&#34;time&#34;</div><div class="operator">]</div><div class="operator">=</div><div class="operator">[</div><div class="operator">]</div><div class="ident">string</div><div class="operator">{</div><div class="operator">*</div><div class="ident">params</div><div class="operator">.</div><div class="ident">Time</div><div class="operator">}</div>  <div class="operator"></div>
+        <div class="ident">addTimeManually</div><div class="operator">=</div><div class="ident">false</div><div class="operator"></div>
+    <div class="operator">}</div> <div class="keyword">else</div> <div class="keyword">if</div><div class="operator">(</div><div class="ident">params</div><div class="operator">.</div><div class="ident">Time</div><div class="operator">==</div><div class="ident">nil</div><div class="operator">)</div><div class="operator">{</div>
+       <div class="ident">par</div><div class="operator">[</div><div class="literal">&#34;time&#34;</div><div class="operator">]</div><div class="operator">=</div><div class="operator">[</div><div class="operator">]</div><div class="ident">string</div><div class="operator">{</div><div class="ident">time_default</div><div class="operator">}</div>  <div class="operator"></div>
+        <div class="ident">addTimeManually</div><div class="operator">=</div><div class="ident">false</div><div class="operator"></div>
+    <div class="operator">}</div> <div class="keyword">else</div><div class="operator">{</div>
+        
+        <div class="ident">addTimeManually</div><div class="operator">=</div><div class="ident">true</div><div class="operator"></div>
+    <div class="operator">}</div><div class="operator"></div>
+    <div class="ident">par</div><div class="operator">[</div><div class="literal">&#34;mode&#34;</div><div class="operator">]</div><div class="operator">=</div><div class="operator">[</div><div class="operator">]</div><div class="ident">string</div><div class="operator">{</div><div class="ident">params</div><div class="operator">.</div><div class="ident">Mode</div><div class="operator">}</div><div class="operator"></div>
+    
+    <div class="keyword">if</div><div class="operator">(</div><div class="ident">params</div><div class="operator">.</div><div class="ident">Poles</div><div class="operator">!=</div><div class="ident">nil</div><div class="operator">)</div><div class="operator">{</div>
+        <div class="ident">par</div><div class="operator">[</div><div class="literal">&#34;poles&#34;</div><div class="operator">]</div><div class="operator">=</div><div class="operator">[</div><div class="operator">]</div><div class="ident">string</div><div class="operator">{</div><div class="ident">GetLinesSeparated</div><div class="operator">(</div><div class="operator">*</div><div class="ident">params</div><div class="operator">.</div><div class="ident">Poles</div><div class="operator">)</div><div class="operator">}</div><div class="operator"></div>
+    <div class="operator">}</div><div class="operator"></div>
+    <div class="ident">par</div><div class="operator">[</div><div class="literal">&#34;needPlatformDetail&#34;</div><div class="operator">]</div><div class="operator">=</div><div class="operator">[</div><div class="operator">]</div><div class="ident">string</div><div class="operator">{</div><div class="ident">params</div><div class="operator">.</div><div class="ident">NeedPlatformDetail</div><div class="operator">}</div><div class="operator"></div>
+    
+    <div class="keyword">if</div> <div class="operator">(</div><div class="ident">params</div><div class="operator">.</div><div class="ident">TransportFilter</div><div class="operator">!=</div><div class="ident">nil</div><div class="operator">)</div><div class="operator">{</div>
+        <div class="ident">par</div><div class="operator">[</div><div class="literal">&#34;transportFilter&#34;</div><div class="operator">]</div><div class="operator">=</div><div class="operator">[</div><div class="operator">]</div><div class="ident">string</div><div class="operator">{</div><div class="operator">*</div><div class="ident">params</div><div class="operator">.</div><div class="ident">TransportFilter</div><div class="operator">}</div><div class="operator"></div>
+    <div class="operator">}</div><div class="operator"></div>
+	<div class="keyword">return</div> <div class="ident">par</div><div class="operator">,</div><div class="ident">err</div><div class="operator">,</div><div class="ident">addTimeManually</div><div class="operator"></div>
+<div class="operator">}</div><div class="operator"></div>
+
+</code></pre></td>
+      </tr>
+      
+      <tr class="section">
+	<td class="doc"><p>Function to set time correctly</p>
+</td>
+	<td class="code"><pre><code>
+<div class="keyword">func</div> <div class="operator">(</div><div class="ident">params</div> <div class="operator">*</div><div class="ident">JourneyParams</div><div class="operator">)</div><div class="ident">SetTime</div><div class="operator">(</div><div class="ident">t</div> <div class="ident">time</div><div class="operator">.</div><div class="ident">Time</div><div class="operator">)</div><div class="operator">{</div>
+	<div class="ident">params</div><div class="operator">.</div><div class="ident">Time</div><div class="operator">=</div><div class="ident">GetTimeFormat</div><div class="operator">(</div><div class="ident">t</div><div class="operator">)</div><div class="operator"></div>
+<div class="operator">}</div><div class="operator"></div>
+
+</code></pre></td>
+      </tr>
+      
+      <tr class="section">
+	<td class="doc"><p>If needed sets it to correct string value. Default is false</p>
+</td>
+	<td class="code"><pre><code>
+<div class="keyword">func</div> <div class="operator">(</div><div class="ident">params</div> <div class="operator">*</div><div class="ident">JourneyParams</div><div class="operator">)</div><div class="ident">SetPlatformDetailNeeded</div><div class="operator">(</div><div class="ident">platformDetail</div> <div class="ident">bool</div><div class="operator">)</div><div class="operator">{</div>
+	<div class="keyword">if</div> <div class="ident">platformDetail</div> <div class="operator">{</div>
+		<div class="ident">params</div><div class="operator">.</div><div class="ident">NeedPlatformDetail</div><div class="operator">=</div><div class="ident">supportedNeedPlatformDetail</div><div class="operator">[</div><div class="literal">0</div><div class="operator">]</div><div class="operator"></div>
+		<div class="keyword">return</div><div class="operator"></div>
+	<div class="operator">}</div><div class="operator"></div>
+	<div class="ident">params</div><div class="operator">.</div><div class="ident">NeedPlatformDetail</div><div class="operator">=</div><div class="ident">supportedNeedPlatformDetail</div><div class="operator">[</div><div class="literal">1</div><div class="operator">]</div><div class="operator"></div>
+<div class="operator">}</div><div class="operator"></div>
+
+</code></pre></td>
+      </tr>
+      
+      <tr class="section">
+	<td class="doc"><p>Sets Poles from multiple poles (as string) array to correct string parameter</p>
+</td>
+	<td class="code"><pre><code>
+<div class="keyword">func</div> <div class="operator">(</div><div class="ident">params</div> <div class="operator">*</div><div class="ident">JourneyParams</div><div class="operator">)</div><div class="ident">SetPoles</div><div class="operator">(</div><div class="ident">poles</div> <div class="operator">[</div><div class="operator">]</div><div class="ident">string</div><div class="operator">)</div><div class="ident">error</div><div class="operator">{</div>
+	<div class="keyword">var</div> <div class="ident">err</div> <div class="ident">error</div><div class="operator"></div>
+	<div class="keyword">for</div> <div class="ident">_</div><div class="operator">,</div><div class="ident">v</div><div class="operator">:=</div><div class="keyword">range</div> <div class="ident">poles</div> <div class="operator">{</div>
+		<div class="ident">err</div><div class="operator">=</div><div class="ident">validatePole</div><div class="operator">(</div><div class="ident">v</div><div class="operator">)</div>	<div class="operator"></div>
+		<div class="keyword">if</div> <div class="ident">err</div><div class="operator">!=</div><div class="ident">nil</div><div class="operator">{</div><div class="keyword">return</div> <div class="ident">err</div><div class="operator">}</div><div class="operator"></div>
+		<div class="ident">params</div><div class="operator">.</div><div class="ident">AddPole</div><div class="operator">(</div><div class="ident">v</div><div class="operator">)</div><div class="operator"></div>
+	<div class="operator">}</div><div class="operator"></div>
+</code></pre></td>
+      </tr>
+      
+      <tr class="section">
+	<td class="doc"><p>temp:=GetLinesSeparated(poles)// TODO rename GetLinesSeparated, to something else.
+params.Poles=&amp;temp</p>
+</td>
+	<td class="code"><pre><code>	<div class="keyword">return</div> <div class="ident">nil</div><div class="operator"></div>
+<div class="operator">}</div><div class="operator"></div>
+</code></pre></td>
+      </tr>
+      
+      <tr class="section">
+	<td class="doc"></td>
+	<td class="code"><pre><code><div class="keyword">func</div> <div class="operator">(</div><div class="ident">params</div> <div class="operator">*</div><div class="ident">JourneyParams</div><div class="operator">)</div><div class="ident">AddPole</div><div class="operator">(</div><div class="ident">pole</div> <div class="ident">string</div><div class="operator">)</div><div class="ident">error</div><div class="operator">{</div>
+	<div class="ident">err</div><div class="operator">:=</div><div class="ident">validatePole</div><div class="operator">(</div><div class="ident">pole</div><div class="operator">)</div>	<div class="operator"></div>
+	<div class="keyword">if</div> <div class="ident">err</div><div class="operator">!=</div><div class="ident">nil</div><div class="operator">{</div><div class="keyword">return</div> <div class="ident">err</div><div class="operator">}</div><div class="operator"></div>
+	<div class="keyword">if</div> <div class="ident">params</div><div class="operator">.</div><div class="ident">Poles</div><div class="operator">==</div><div class="ident">nil</div><div class="operator">{</div>
+		<div class="ident">ne</div><div class="operator">:=</div><div class="operator">[</div><div class="operator">]</div><div class="ident">string</div><div class="operator">{</div><div class="ident">pole</div><div class="operator">}</div><div class="operator"></div>
+		<div class="ident">params</div><div class="operator">.</div><div class="ident">Poles</div><div class="operator">=</div><div class="operator">&amp;</div><div class="ident">ne</div><div class="operator"></div>
+	<div class="operator">}</div> <div class="keyword">else</div> <div class="operator">{</div>
+		<div class="ident">ne</div><div class="operator">:=</div><div class="ident">append</div><div class="operator">(</div><div class="operator">*</div><div class="ident">params</div><div class="operator">.</div><div class="ident">Poles</div><div class="operator">,</div><div class="ident">pole</div><div class="operator">)</div><div class="operator"></div>
+		<div class="ident">params</div><div class="operator">.</div><div class="ident">Poles</div><div class="operator">=</div><div class="operator">&amp;</div><div class="ident">ne</div><div class="operator"></div>
+	<div class="operator">}</div><div class="operator"></div>
+	<div class="keyword">return</div> <div class="ident">nil</div><div class="operator"></div>
+<div class="operator">}</div><div class="operator"></div>
+</code></pre></td>
+      </tr>
+      
+      <tr class="section">
+	<td class="doc"><h2>Response Objects</h2>
+
+<p>Response Object Interface Haltestellenmonitor</p>
+</td>
+	<td class="code"><pre><code>
+<div class="keyword">type</div> <div class="ident">Journey</div> <div class="keyword">struct</div> <div class="operator">{</div>
+	<div class="ident">ShortLabel</div> <div class="ident">string</div> <div class="literal">`json:&#34;shortLabel&#34;`</div><div class="operator"></div>
+	<div class="ident">ProjectedTime</div> <div class="ident">string</div> <div class="literal">`json:&#34;projectedTime&#34;`</div><div class="operator"></div>
+	<div class="ident">Label</div>	<div class="ident">string</div> <div class="literal">`json:&#34;label&#34;`</div><div class="operator"></div>
+	<div class="ident">Icon</div>	<div class="ident">string</div> <div class="literal">`json:&#34;icon&#34;`</div><div class="operator"></div>
+	<div class="ident">Color</div>	<div class="ident">string</div> <div class="literal">`json:&#34;color&#34;`</div><div class="operator"></div>
+	<div class="ident">OtherProjectedTimes</div> <div class="operator">[</div><div class="operator">]</div><div class="ident">string</div> <div class="literal">`json:&#34;otherProjectedTimes&#34;`</div> <div class="operator"></div><div class="comment">// Kompatibilitätsgründe</div>
+	<div class="ident">OtherTimes</div>	<div class="operator">[</div><div class="operator">]</div><div class="ident">string</div> <div class="literal">`json:&#34;otherTimes&#34;`</div> <div class="operator"></div><div class="comment">// Kompatibilitätsgründe</div>
+	<div class="ident">PastRequestText</div>	<div class="ident">string</div> <div class="literal">`json:&#34;pastRequestText&#34;`</div><div class="operator"></div>
+	<div class="ident">UpdateIterations</div>	<div class="ident">string</div> <div class="literal">`json:&#34;updateIterations&#34;`</div> <div class="operator"></div><div class="comment">// Kompatibilitätsgründe</div>
+	<div class="ident">UpdateTime</div>	<div class="ident">string</div> <div class="literal">`json:&#34;updateTime&#34;`</div> <div class="operator"></div><div class="comment">// Kompatibilitätsgründe</div>
+    <div class="ident">Ticker</div> <div class="ident">string</div> <div class="literal">`json:&#34;ticker&#34;`</div><div class="operator"></div>
+    <div class="ident">Time</div> <div class="ident">string</div> <div class="literal">`json:&#34;time&#34;`</div><div class="operator"></div>
+    <div class="ident">ListOfDepartures</div> <div class="operator">[</div><div class="operator">]</div><div class="operator">*</div><div class="ident">Departure</div> <div class="literal">`json:&#34;listOfDepartures&#34;`</div><div class="operator"></div>
+<div class="operator">}</div><div class="operator"></div>
+</code></pre></td>
+      </tr>
+      
+      <tr class="section">
+	<td class="doc"></td>
+	<td class="code"><pre><code>
+<div class="keyword">func</div> <div class="operator">(</div><div class="ident">j</div> <div class="operator">*</div><div class="ident">Journey</div><div class="operator">)</div><div class="ident">SplitMultipleTicker</div><div class="operator">(</div><div class="operator">)</div><div class="operator">[</div><div class="operator">]</div><div class="ident">string</div><div class="operator">{</div>
+	<div class="ident">result</div><div class="operator">:=</div><div class="operator">[</div><div class="operator">]</div><div class="ident">string</div><div class="operator">{</div><div class="operator">}</div><div class="operator"></div>
+	<div class="keyword">if</div> <div class="ident">j</div><div class="operator">.</div><div class="ident">Ticker</div><div class="operator">!=</div><div class="literal">&#34;&#34;</div><div class="operator">{</div>
+		<div class="ident">result</div><div class="operator">:=</div> <div class="ident">strings</div><div class="operator">.</div><div class="ident">Split</div><div class="operator">(</div><div class="ident">j</div><div class="operator">.</div><div class="ident">Ticker</div><div class="operator">,</div><div class="ident">TICKER_START_AND_END_IDENTIFIER</div><div class="operator">&#43;</div><div class="ident">TICKER_START_AND_END_IDENTIFIER</div><div class="operator">)</div><div class="operator"></div>
+		<div class="keyword">for</div> <div class="ident">_</div><div class="operator">,</div><div class="ident">v</div><div class="operator">:=</div> <div class="keyword">range</div> <div class="ident">result</div><div class="operator">{</div>
+			<div class="keyword">if</div> <div class="operator">!</div><div class="ident">strings</div><div class="operator">.</div><div class="ident">HasPrefix</div><div class="operator">(</div><div class="ident">v</div><div class="operator">,</div> <div class="ident">TICKER_START_AND_END_IDENTIFIER</div><div class="operator">)</div><div class="operator">{</div>
+				<div class="ident">v</div><div class="operator">=</div><div class="ident">TICKER_START_AND_END_IDENTIFIER</div><div class="operator">&#43;</div><div class="ident">v</div><div class="operator"></div>
+			<div class="operator">}</div><div class="operator"></div>
+			<div class="keyword">if</div> <div class="operator">!</div><div class="ident">strings</div><div class="operator">.</div><div class="ident">HasSuffix</div><div class="operator">(</div><div class="ident">v</div><div class="operator">,</div> <div class="ident">TICKER_START_AND_END_IDENTIFIER</div><div class="operator">)</div><div class="operator">{</div>
+				<div class="ident">v</div><div class="operator">=</div><div class="ident">v</div><div class="operator">&#43;</div><div class="ident">TICKER_START_AND_END_IDENTIFIER</div><div class="operator"></div>
+			<div class="operator">}</div><div class="operator"></div>
+		<div class="operator">}</div><div class="operator"></div>
+	<div class="operator">}</div><div class="operator"></div>
+	<div class="keyword">return</div> <div class="ident">result</div><div class="operator"></div>
+<div class="operator">}</div><div class="operator"></div>
+
+</code></pre></td>
+      </tr>
+      
+      <tr class="section">
+	<td class="doc"><p>Response Object for Interface Haltestellenmonitor</p>
+</td>
+	<td class="code"><pre><code>
+<div class="keyword">type</div> <div class="ident">Departure</div> <div class="keyword">struct</div> <div class="operator">{</div>
+    <div class="ident">Time</div> <div class="ident">string</div> <div class="literal">`json:&#34;time&#34;`</div><div class="operator"></div>
+    <div class="ident">Status</div> <div class="ident">string</div> <div class="literal">`json:&#34;status&#34;`</div><div class="operator"></div>
+    <div class="ident">Direction</div> <div class="ident">string</div> <div class="literal">`json:&#34;direction&#34;`</div><div class="operator"></div>
+    <div class="ident">Platform</div> <div class="ident">string</div> <div class="literal">`json:&#34;platform&#34;`</div><div class="operator"></div>
+    <div class="ident">Transportation</div> <div class="ident">string</div> <div class="literal">`json:&#34;transportation&#34;`</div><div class="operator"></div>
+    <div class="ident">TourId</div> <div class="ident">string</div> <div class="literal">`json:&#34;tourId&#34;`</div><div class="operator"></div>
+    <div class="ident">KindOfTour</div> <div class="ident">string</div> <div class="literal">`json:&#34;kindOfTour&#34;`</div><div class="operator"></div>
+    <div class="ident">PositionInTour</div> <div class="ident">string</div> <div class="literal">`json:&#34;positionInTour&#34;`</div><div class="operator"></div>
+    <div class="ident">StatusNote</div> <div class="ident">string</div> <div class="literal">`json:&#34;statusNote&#34;`</div><div class="operator"></div>
+    <div class="ident">LineId</div> <div class="ident">string</div> <div class="literal">`json:&#34;lineId&#34;`</div><div class="operator"></div>
+    <div class="ident">LineLabel</div> <div class="ident">string</div> <div class="literal">`json:&#34;lineLabel&#34;`</div><div class="operator"></div>
+    <div class="ident">DifferenceTime</div> <div class="ident">string</div> <div class="literal">`json:&#34;differenceTime&#34;`</div><div class="operator"></div>
+    <div class="ident">ForeignLine</div> <div class="ident">string</div> <div class="literal">`json:&#34;foreignLine&#34;`</div><div class="operator"></div>
+    <div class="ident">NewsAvailable</div> <div class="ident">string</div> <div class="literal">`json:&#34;newsAvailable&#34;`</div><div class="operator"></div>
+<div class="operator">}</div><div class="operator"></div>
+
+</code></pre></td>
+      </tr>
+      
+      <tr class="section">
+	<td class="doc"><p>Check if Departure contains Realtime Data</p>
+</td>
+	<td class="code"><pre><code>
+<div class="keyword">func</div> <div class="operator">(</div><div class="ident">d</div> <div class="operator">*</div><div class="ident">Departure</div><div class="operator">)</div><div class="ident">IsRealtimeData</div><div class="operator">(</div><div class="operator">)</div><div class="ident">bool</div><div class="operator">{</div>
+	<div class="keyword">return</div> <div class="ident">d</div><div class="operator">.</div><div class="ident">KindOfTour</div><div class="operator">==</div><div class="ident">KIND_OF_TOUR_REALTIME_DATA</div><div class="operator"></div>
+<div class="operator">}</div><div class="operator"></div>
+
+</code></pre></td>
+      </tr>
+      
+      <tr class="section">
+	<td class="doc"><p>Get right pvalue for Paremter LineJourneyParams.TourType</p>
+</td>
+	<td class="code"><pre><code>
+<div class="keyword">func</div> <div class="operator">(</div><div class="ident">d</div> <div class="operator">*</div><div class="ident">Departure</div><div class="operator">)</div><div class="ident">GetTourType</div><div class="operator">(</div><div class="operator">)</div><div class="ident">string</div><div class="operator">{</div>
+	<div class="keyword">return</div> <div class="ident">parseKindOfTourToTourType</div><div class="operator">(</div><div class="ident">d</div><div class="operator">.</div><div class="ident">KindOfTour</div><div class="operator">)</div><div class="operator"></div>
+<div class="operator">}</div><div class="operator"></div>
+
+</code></pre></td>
+      </tr>
+      
+      <tr class="section">
+	<td class="doc"><p>Is it a rnv Line or not</p>
+</td>
+	<td class="code"><pre><code>
+<div class="keyword">func</div> <div class="operator">(</div><div class="ident">d</div> <div class="operator">*</div><div class="ident">Departure</div><div class="operator">)</div><div class="ident">IsForeignLine</div><div class="operator">(</div><div class="operator">)</div><div class="ident">bool</div><div class="operator">{</div>
+	<div class="keyword">return</div> <div class="ident">d</div><div class="operator">.</div><div class="ident">ForeignLine</div><div class="operator">==</div><div class="ident">TRUE</div><div class="operator"></div>
+<div class="operator">}</div><div class="operator"></div>
+</code></pre></td>
+      </tr>
+      
+      <tr class="section">
+	<td class="doc"><p>Is a Bus</p>
+</td>
+	<td class="code"><pre><code>
+<div class="keyword">func</div> <div class="operator">(</div><div class="ident">d</div> <div class="operator">*</div><div class="ident">Departure</div><div class="operator">)</div><div class="ident">IsBus</div><div class="operator">(</div><div class="operator">)</div><div class="ident">bool</div><div class="operator">{</div>
+</code></pre></td>
+      </tr>
+      
+      <tr class="section">
+	<td class="doc"><p>return d.Transportation==TRANSPORTATION<em>KOM || d.Transportation==TRANSPORTATION</em>WEBU</p>
+</td>
+	<td class="code"><pre><code>	<div class="keyword">return</div> <div class="operator">!</div><div class="ident">d</div><div class="operator">.</div><div class="ident">IsTram</div><div class="operator">(</div><div class="operator">)</div><div class="operator"></div>
+<div class="operator">}</div><div class="operator"></div>
+</code></pre></td>
+      </tr>
+      
+      <tr class="section">
+	<td class="doc"><p>Is a Tram</p>
+</td>
+	<td class="code"><pre><code>
+<div class="keyword">func</div> <div class="operator">(</div><div class="ident">d</div> <div class="operator">*</div><div class="ident">Departure</div><div class="operator">)</div><div class="ident">IsTram</div><div class="operator">(</div><div class="operator">)</div><div class="ident">bool</div><div class="operator">{</div>
+	<div class="keyword">return</div> <div class="ident">d</div><div class="operator">.</div><div class="ident">Transportation</div><div class="operator">==</div><div class="ident">TRANSPORTATION_STRAB</div><div class="operator"></div>
+<div class="operator">}</div><div class="operator"></div>
+</code></pre></td>
+      </tr>
+      
+      <tr class="section">
+	<td class="doc"><p>Returns the Extended Route Type of GTFS see https://support.google.com/transitpartners/answer/3520902
+rnv uses: 704  for Bus, 900  for Tram</p>
+</td>
+	<td class="code"><pre><code>
+<div class="keyword">func</div> <div class="operator">(</div><div class="ident">d</div> <div class="operator">*</div><div class="ident">Departure</div><div class="operator">)</div><div class="ident">GetGTFSExtendedRouteType</div><div class="operator">(</div><div class="operator">)</div><div class="ident">int</div><div class="operator">{</div>
+	<div class="keyword">if</div> <div class="ident">d</div><div class="operator">.</div><div class="ident">IsTram</div><div class="operator">(</div><div class="operator">)</div><div class="operator">{</div>
+		<div class="keyword">return</div> <div class="literal">900</div><div class="operator"></div>
+	<div class="operator">}</div><div class="operator"></div>
+	<div class="keyword">return</div> <div class="literal">704</div><div class="operator"></div>
+<div class="operator">}</div><div class="operator"></div>
+
+</code></pre></td>
+      </tr>
+      
+      <tr class="section">
+	<td class="doc"><p>Is Departure cancelled</p>
+</td>
+	<td class="code"><pre><code>
+<div class="keyword">func</div> <div class="operator">(</div><div class="ident">d</div> <div class="operator">*</div><div class="ident">Departure</div><div class="operator">)</div><div class="ident">IsCancelled</div><div class="operator">(</div><div class="operator">)</div><div class="ident">bool</div><div class="operator">{</div>
+	<div class="keyword">return</div> <div class="ident">d</div><div class="operator">.</div><div class="ident">Status</div><div class="operator">==</div><div class="ident">STATUS_CANCELLED</div><div class="operator"></div>
+<div class="operator">}</div><div class="operator"></div>
+</code></pre></td>
+      </tr>
+      
+      <tr class="section">
+	<td class="doc"></td>
+	<td class="code"><pre><code><div class="keyword">func</div> <div class="operator">(</div><div class="ident">d</div> <div class="operator">*</div><div class="ident">Departure</div><div class="operator">)</div><div class="ident">AreNewsAvailable</div><div class="operator">(</div><div class="operator">)</div><div class="ident">bool</div><div class="operator">{</div>
+	<div class="keyword">return</div> <div class="ident">d</div><div class="operator">.</div><div class="ident">NewsAvailable</div><div class="operator">==</div><div class="ident">TRUE</div><div class="operator"></div>
+<div class="operator">}</div><div class="operator"></div>
+
+</code></pre></td>
+      </tr>
+      
+      <tr class="section">
+	<td class="doc"><p>Return value nil indicates no realtime data.</p>
+</td>
+	<td class="code"><pre><code>
+<div class="keyword">func</div> <div class="operator">(</div><div class="ident">d</div> <div class="operator">*</div><div class="ident">Departure</div><div class="operator">)</div><div class="ident">GetDelayIfRealtime</div><div class="operator">(</div><div class="operator">)</div><div class="operator">*</div><div class="ident">int</div><div class="operator">{</div>
+	<div class="keyword">if</div> <div class="ident">d</div><div class="operator">.</div><div class="ident">IsRealtimeData</div><div class="operator">(</div><div class="operator">)</div><div class="operator">{</div>
+</code></pre></td>
+      </tr>
+      
+      <tr class="section">
+	<td class="doc"><p>delay is in Time string hh:mm+delay</p>
+</td>
+	<td class="code"><pre><code>		<div class="ident">res</div><div class="operator">:=</div><div class="ident">strings</div><div class="operator">.</div><div class="ident">Split</div><div class="operator">(</div><div class="ident">d</div><div class="operator">.</div><div class="ident">Time</div><div class="operator">,</div><div class="literal">&#34;&#43;&#34;</div><div class="operator">)</div><div class="operator"></div>
+		<div class="keyword">if</div> <div class="operator">(</div><div class="ident">len</div><div class="operator">(</div><div class="ident">res</div><div class="operator">)</div><div class="operator">==</div><div class="literal">2</div><div class="operator">)</div><div class="operator">{</div>
+			<div class="ident">toInt</div><div class="operator">,</div><div class="ident">_</div><div class="operator">:=</div><div class="ident">strconv</div><div class="operator">.</div><div class="ident">Atoi</div><div class="operator">(</div><div class="ident">res</div><div class="operator">[</div><div class="literal">1</div><div class="operator">]</div><div class="operator">)</div><div class="operator"></div>
+			<div class="keyword">return</div> <div class="operator">&amp;</div><div class="ident">toInt</div><div class="operator"></div>
+		<div class="operator">}</div><div class="operator"></div>
+	<div class="operator">}</div><div class="operator"></div>
+	<div class="keyword">return</div> <div class="ident">nil</div><div class="operator"></div>
+<div class="operator">}</div><div class="operator"></div>
+</code></pre></td>
+      </tr>
+      
+      <tr class="section">
+	<td class="doc"></td>
+	<td class="code"><pre><code><div class="keyword">func</div> <div class="operator">(</div><div class="ident">d</div> <div class="operator">*</div><div class="ident">Departure</div><div class="operator">)</div><div class="ident">GetRNVGTFSRouteId</div><div class="operator">(</div><div class="operator">)</div><div class="ident">string</div><div class="operator">{</div>
+</code></pre></td>
+      </tr>
+      
+      <tr class="section">
+	<td class="doc"><p>RNV001_RNV001A</p>
+</td>
+	<td class="code"><pre><code>	<div class="ident">tmp</div><div class="operator">:=</div><div class="ident">strings</div><div class="operator">.</div><div class="ident">Split</div><div class="operator">(</div><div class="ident">d</div><div class="operator">.</div><div class="ident">LineId</div><div class="operator">,</div><div class="literal">&#34;_&#34;</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">result</div><div class="operator">:=</div><div class="ident">strings</div><div class="operator">.</div><div class="ident">Replace</div><div class="operator">(</div><div class="ident">tmp</div><div class="operator">[</div><div class="literal">0</div><div class="operator">]</div><div class="operator">,</div><div class="literal">&#34;RNV&#34;</div><div class="operator">,</div><div class="literal">&#34;&#34;</div><div class="operator">,</div><div class="operator">-</div><div class="literal">1</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">toInt</div><div class="operator">,</div><div class="ident">_</div><div class="operator">:=</div><div class="ident">strconv</div><div class="operator">.</div><div class="ident">Atoi</div><div class="operator">(</div><div class="ident">result</div><div class="operator">)</div><div class="operator"></div>
+	<div class="keyword">return</div> <div class="ident">strconv</div><div class="operator">.</div><div class="ident">Itoa</div><div class="operator">(</div><div class="ident">toInt</div><div class="operator">)</div><div class="operator"></div>
+<div class="operator">}</div><div class="operator"></div>
+</code></pre></td>
+      </tr>
+      
+      <tr class="section">
+	<td class="doc"><h2>Requests</h2>
+
+<p>Request for Interface Haltestellenmonitor</p>
+</td>
+	<td class="code"><pre><code>
+<div class="keyword">func</div> <div class="ident">GetStationMonitor</div><div class="operator">(</div><div class="ident">params</div> <div class="ident">JourneyParams</div><div class="operator">)</div> <div class="operator">(</div><div class="operator">*</div><div class="ident">Journey</div><div class="operator">,</div><div class="ident">error</div><div class="operator">)</div><div class="operator">{</div>
+    <div class="ident">urlString</div><div class="operator">,</div><div class="ident">err</div><div class="operator">:=</div><div class="ident">GetStationMonitorUrlAsString</div><div class="operator">(</div><div class="ident">params</div><div class="operator">)</div>   <div class="operator"></div>
+	<div class="keyword">var</div> <div class="ident">record</div> <div class="ident">Journey</div><div class="operator"></div>
+	<div class="ident">log</div><div class="operator">.</div><div class="ident">Println</div><div class="operator">(</div><div class="ident">urlString</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">log</div><div class="operator">.</div><div class="ident">Println</div><div class="operator">(</div><div class="ident">err</div><div class="operator">)</div><div class="operator"></div>
+	<div class="keyword">if</div> <div class="ident">err</div><div class="operator">!=</div> <div class="ident">nil</div> <div class="operator">{</div>
+		<div class="keyword">return</div> <div class="operator">&amp;</div><div class="ident">record</div><div class="operator">,</div><div class="ident">err</div><div class="operator"></div>
+	<div class="operator">}</div><div class="operator"></div>
+    <div class="ident">err</div><div class="operator">=</div><div class="ident">makeRequest</div><div class="operator">(</div><div class="ident">urlString</div><div class="operator">,</div><div class="operator">&amp;</div><div class="ident">record</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">log</div><div class="operator">.</div><div class="ident">Println</div><div class="operator">(</div><div class="ident">err</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">log</div><div class="operator">.</div><div class="ident">Println</div><div class="operator">(</div><div class="ident">record</div><div class="operator">)</div><div class="operator"></div>
+	<div class="keyword">return</div> <div class="operator">&amp;</div><div class="ident">record</div><div class="operator">,</div> <div class="ident">err</div><div class="operator"></div>
+<div class="operator">}</div><div class="operator"></div>
+</code></pre></td>
+      </tr>
+      
+      <tr class="section">
+	<td class="doc"><h2>Request From Response Object</h2>
+</td>
+	<td class="code"><pre><code>
+<div class="keyword">func</div> <div class="operator">(</div><div class="ident">d</div> <div class="operator">*</div><div class="ident">Departure</div><div class="operator">)</div><div class="ident">GetNewsIfAvailable</div><div class="operator">(</div><div class="operator">)</div><div class="operator">(</div><div class="operator">[</div><div class="operator">]</div><div class="ident">NewsEntry</div><div class="operator">,</div><div class="ident">error</div><div class="operator">)</div><div class="operator">{</div>
+	<div class="ident">result</div><div class="operator">:=</div><div class="operator">[</div><div class="operator">]</div><div class="ident">NewsEntry</div><div class="operator">{</div><div class="operator">}</div><div class="operator"></div>
+	<div class="keyword">if</div> <div class="ident">d</div><div class="operator">.</div><div class="ident">AreNewsAvailable</div><div class="operator">(</div><div class="operator">)</div><div class="operator">{</div>		
+		<div class="ident">news</div><div class="operator">,</div><div class="ident">err</div><div class="operator">:=</div><div class="ident">GetNews</div><div class="operator">(</div><div class="operator">)</div><div class="operator">;</div>
+		<div class="keyword">if</div> <div class="ident">err</div><div class="operator">!=</div> <div class="ident">nil</div> <div class="operator">{</div>
+			<div class="keyword">return</div> <div class="ident">result</div><div class="operator">,</div><div class="ident">nil</div><div class="operator"></div>
+		<div class="operator">}</div><div class="operator"></div>
+		<div class="ident">tick</div><div class="operator">,</div><div class="ident">err2</div><div class="operator">:=</div><div class="ident">GetTickerForLines</div><div class="operator">(</div><div class="operator">[</div><div class="operator">]</div><div class="ident">string</div><div class="operator">{</div><div class="ident">d</div><div class="operator">.</div><div class="ident">LineLabel</div><div class="operator">}</div><div class="operator">)</div><div class="operator"></div>
+		<div class="keyword">if</div> <div class="ident">err2</div><div class="operator">!=</div> <div class="ident">nil</div> <div class="operator">{</div>
+			<div class="keyword">return</div> <div class="ident">result</div><div class="operator">,</div><div class="ident">nil</div><div class="operator"></div>
+		<div class="operator">}</div><div class="operator"></div>
+</code></pre></td>
+      </tr>
+      
+      <tr class="section">
+	<td class="doc"><p>TODO test if LineLabel is value in seperated Line in newsEntry</p>
+</td>
+	<td class="code"><pre><code>		<div class="keyword">for</div> <div class="ident">_</div><div class="operator">,</div><div class="ident">v</div><div class="operator">:=</div> <div class="keyword">range</div> <div class="ident">news</div> <div class="operator">{</div>
+			<div class="keyword">if</div> <div class="operator">!</div><div class="ident">v</div><div class="operator">.</div><div class="ident">IsOldNews</div> <div class="operator">&amp;&amp;</div> <div class="ident">v</div><div class="operator">.</div><div class="ident">AffectsGivenLine</div><div class="operator">(</div><div class="ident">d</div><div class="operator">.</div><div class="ident">LineLabel</div><div class="operator">)</div><div class="operator">{</div>
+				<div class="ident">tick</div><div class="operator">=</div><div class="ident">append</div><div class="operator">(</div><div class="ident">tick</div><div class="operator">,</div><div class="ident">v</div><div class="operator">)</div><div class="operator"></div>
+			<div class="operator">}</div><div class="operator"></div>
+		<div class="operator">}</div><div class="operator"></div>
+		<div class="keyword">return</div> <div class="ident">tick</div><div class="operator">,</div><div class="ident">nil</div><div class="operator"></div>
+	<div class="operator">}</div><div class="operator"></div>
+	<div class="keyword">return</div> <div class="ident">result</div><div class="operator">,</div><div class="ident">nil</div><div class="operator"></div>
+<div class="operator">}</div><div class="operator"></div>
+
+</code></pre></td>
+      </tr>
+      
+      <tr class="section">
+	<td class="doc"><p>Gets LineJourney from Interface Farhtverläufe. Parameter TourId and Time will be overwritten with Departure Object values</p>
+</td>
+	<td class="code"><pre><code>
+<div class="keyword">func</div> <div class="operator">(</div><div class="ident">d</div> <div class="operator">*</div><div class="ident">Departure</div><div class="operator">)</div><div class="ident">GetLineJourneyWithAdditionalParams</div><div class="operator">(</div><div class="ident">params</div> <div class="ident">LineJourneyParams</div><div class="operator">)</div><div class="operator">(</div><div class="operator">*</div><div class="ident">LineJourney</div><div class="operator">,</div><div class="ident">error</div><div class="operator">)</div><div class="operator">{</div>
+	<div class="ident">params</div><div class="operator">.</div><div class="ident">TourId</div><div class="operator">=</div><div class="ident">d</div><div class="operator">.</div><div class="ident">TourId</div><div class="operator"></div>
+</code></pre></td>
+      </tr>
+      
+      <tr class="section">
+	<td class="doc"><p>params.LineId=&amp;d.LineId</p>
+</td>
+	<td class="code"><pre><code>	<div class="ident">time</div><div class="operator">:=</div><div class="ident">GetTimeFormatNow</div><div class="operator">(</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">params</div><div class="operator">.</div><div class="ident">Time</div><div class="operator">=</div><div class="operator">*</div><div class="ident">time</div><div class="operator"></div>
+	
+</code></pre></td>
+      </tr>
+      
+      <tr class="section">
+	<td class="doc"><p>params.TourType= d.GetTourType()</p>
+</td>
+	<td class="code"><pre><code>	<div class="keyword">return</div> <div class="ident">GetLines</div><div class="operator">(</div><div class="ident">params</div><div class="operator">)</div><div class="operator"></div>
+	
+<div class="operator">}</div><div class="operator"></div>
+
+</code></pre></td>
+      </tr>
+      
+      <tr class="section">
+	<td class="doc"><p>Gets LineJourney from Interface Farhtverläufe. Only Parameter TourId and Time will applied.</p>
+</td>
+	<td class="code"><pre><code>
+<div class="keyword">func</div> <div class="operator">(</div><div class="ident">d</div> <div class="operator">*</div><div class="ident">Departure</div><div class="operator">)</div><div class="ident">GetLineJourney</div><div class="operator">(</div> <div class="ident">stationId</div> <div class="ident">string</div><div class="operator">)</div><div class="operator">(</div><div class="operator">*</div><div class="ident">LineJourney</div><div class="operator">,</div><div class="ident">error</div><div class="operator">)</div><div class="operator">{</div>	
+	<div class="ident">time</div><div class="operator">:=</div><div class="ident">GetTimeFormatNow</div><div class="operator">(</div><div class="operator">)</div><div class="operator"></div>
+	<div class="keyword">return</div> <div class="ident">GetLines</div><div class="operator">(</div><div class="ident">LineJourneyParams</div><div class="operator">{</div><div class="ident">stationId</div><div class="operator">,</div><div class="ident">d</div><div class="operator">.</div><div class="ident">LineLabel</div><div class="operator">,</div><div class="ident">index</div><div class="operator">,</div> <div class="ident">d</div><div class="operator">.</div><div class="ident">GetTourType</div><div class="operator">(</div><div class="operator">)</div><div class="operator">,</div><div class="ident">d</div><div class="operator">.</div><div class="ident">TourId</div><div class="operator">,</div><div class="operator">*</div><div class="ident">time</div><div class="operator">}</div><div class="operator">)</div>	<div class="operator"></div>
+<div class="operator">}</div><div class="operator"></div>
+
+</code></pre></td>
+      </tr>
+      
+      <tr class="section">
+	<td class="doc"><h2>Other</h2>
+
+<p>These functions are needed to perform asynchronous Requests
+Request for Interface Haltestellenmonitor but returns the result as []byte Array (not Unmarshalled)</p>
+</td>
+	<td class="code"><pre><code>
+<div class="keyword">func</div> <div class="ident">GetStationMonitorForReverse</div><div class="operator">(</div><div class="ident">params</div> <div class="ident">JourneyParams</div><div class="operator">)</div> <div class="operator">(</div><div class="operator">[</div><div class="operator">]</div><div class="ident">byte</div><div class="operator">,</div><div class="ident">error</div><div class="operator">)</div><div class="operator">{</div>
+ 	<div class="ident">urlString</div><div class="operator">,</div><div class="ident">err</div><div class="operator">:=</div><div class="ident">GetStationMonitorUrlAsString</div><div class="operator">(</div><div class="ident">params</div><div class="operator">)</div><div class="operator"></div>
+	<div class="keyword">if</div> <div class="ident">err</div><div class="operator">!=</div><div class="ident">nil</div><div class="operator">{</div><div class="keyword">return</div> <div class="ident">nil</div><div class="operator">,</div><div class="ident">err</div><div class="operator">}</div><div class="operator"></div>
+    <div class="keyword">return</div> <div class="ident">getContent</div><div class="operator">(</div><div class="ident">urlString</div><div class="operator">)</div><div class="operator"></div>
+  
+<div class="operator">}</div><div class="operator"></div>
+
+</code></pre></td>
+      </tr>
+      
+      <tr class="section">
+	<td class="doc"><p>Unmarshalls result from HTTP Response to Jouney Object</p>
+</td>
+	<td class="code"><pre><code>
+<div class="keyword">func</div> <div class="ident">UnmarshalStationMonitorResponse</div><div class="operator">(</div><div class="ident">res</div> <div class="operator">*</div><div class="ident">HttpResponse</div><div class="operator">)</div><div class="operator">(</div><div class="operator">*</div><div class="ident">Journey</div><div class="operator">,</div><div class="ident">error</div><div class="operator">)</div><div class="operator">{</div>
+	<div class="ident">body</div><div class="operator">,</div> <div class="ident">err</div> <div class="operator">:=</div> <div class="ident">ioutil</div><div class="operator">.</div><div class="ident">ReadAll</div><div class="operator">(</div><div class="ident">res</div><div class="operator">.</div><div class="ident">Response</div><div class="operator">.</div><div class="ident">Body</div><div class="operator">)</div><div class="operator"></div>
+	<div class="keyword">if</div> <div class="ident">err</div> <div class="operator">!=</div> <div class="ident">nil</div> <div class="operator">{</div>
+		<div class="keyword">return</div> <div class="ident">nil</div><div class="operator">,</div> <div class="ident">err</div><div class="operator"></div>
+	<div class="operator">}</div><div class="operator"></div>
+	<div class="keyword">var</div> <div class="ident">record</div> <div class="ident">Journey</div><div class="operator"></div>
+	<div class="ident">err</div><div class="operator">=</div><div class="ident">parseResponseObject</div><div class="operator">(</div><div class="ident">body</div><div class="operator">,</div><div class="ident">record</div><div class="operator">)</div><div class="operator"></div>
+	<div class="keyword">return</div> <div class="operator">&amp;</div><div class="ident">record</div><div class="operator">,</div> <div class="ident">err</div><div class="operator"></div>
+<div class="operator">}</div><div class="operator"></div>
+
+</code></pre></td>
+      </tr>
+      
+      <tr class="section">
+	<td class="doc"><p>utiliy for Url for Interface Haltestellenmonitor</p>
+</td>
+	<td class="code"><pre><code>
+<div class="keyword">func</div> <div class="ident">GetStationMonitorUrlAsString</div><div class="operator">(</div><div class="ident">params</div> <div class="ident">JourneyParams</div><div class="operator">)</div><div class="operator">(</div><div class="ident">string</div><div class="operator">,</div><div class="ident">error</div><div class="operator">)</div><div class="operator">{</div>
+	<div class="ident">par</div><div class="operator">,</div><div class="ident">err</div><div class="operator">,</div><div class="ident">addTimeManually</div> <div class="operator">:=</div><div class="ident">params</div><div class="operator">.</div><div class="ident">GetAsUrlParams</div><div class="operator">(</div><div class="operator">)</div>    <div class="operator"></div>
+	<div class="keyword">if</div> <div class="ident">err</div> <div class="operator">!=</div> <div class="ident">nil</div> <div class="operator">{</div>
+		<div class="keyword">return</div> <div class="literal">&#34;&#34;</div><div class="operator">,</div> <div class="ident">err</div><div class="operator"></div>
+	<div class="operator">}</div><div class="operator"></div>
+    <div class="ident">values</div><div class="operator">:=</div><div class="ident">getValues</div><div class="operator">(</div><div class="ident">par</div><div class="operator">)</div><div class="operator"></div>
+    <div class="ident">urlV</div><div class="operator">:=</div><div class="ident">getUrlWithValues</div><div class="operator">(</div><div class="ident">SITE_URL</div><div class="operator">&#43;</div><div class="ident">MODUL_URL</div><div class="operator">&#43;</div><div class="ident">DEPARTURES_URL</div><div class="operator">,</div><div class="ident">values</div><div class="operator">)</div><div class="operator"></div>
+    <div class="keyword">var</div> <div class="ident">urlString</div> <div class="ident">string</div><div class="operator"></div>
+    <div class="keyword">if</div> <div class="ident">addTimeManually</div> <div class="operator">{</div>        
+        <div class="ident">urlString</div><div class="operator">=</div><div class="ident">urlV</div><div class="operator">.</div><div class="ident">String</div><div class="operator">(</div><div class="operator">)</div><div class="operator">&#43;</div><div class="literal">&#34;&amp;time=&#34;</div><div class="operator">&#43;</div><div class="operator">*</div><div class="ident">params</div><div class="operator">.</div><div class="ident">Time</div><div class="operator"></div>
+    <div class="operator">}</div> <div class="keyword">else</div> <div class="operator">{</div>
+        <div class="ident">urlString</div><div class="operator">=</div><div class="ident">urlV</div><div class="operator">.</div><div class="ident">String</div><div class="operator">(</div><div class="operator">)</div><div class="operator"></div>
+    <div class="operator">}</div><div class="operator"></div>
+	<div class="keyword">return</div> <div class="ident">urlString</div><div class="operator">,</div><div class="ident">err</div><div class="operator"></div>
+<div class="operator">}</div><div class="operator"></div>
+</code></pre></td>
+      </tr>
+      
+    </tbody>
+  </table>
+</div>
+</body>
+</html>

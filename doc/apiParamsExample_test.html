@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>apiParamsExample_test.go</title>
+<meta charset="utf-8"/>
+<style type="text/css">body {
+    background: rgb(225, 225, 225);
+    margin: 0px;
+    padding: 0px;
+}
+
+#docgo p {
+    margin-top: 0px;
+    margin-right: 0px;
+    margin-bottom: 15px;
+    margin-left: 0px;
+}
+
+#docgo div {
+    display: inline;
+}
+
+#docgo #background {
+    position: fixed;
+    top: 0; left: 525px; right: 0; bottom: 0;
+    background: rgb(47, 47, 47);
+    border-left: 1px solid #e5e5ee;
+    z-index: -1;
+}
+
+#docgo .keyword {
+    color: rgb(250, 200, 100);
+}
+
+#docgo .literal {
+    color: rgb(140, 190, 100);
+}
+
+#docgo .ident {
+    color: white;
+}
+
+#docgo .operator {
+    color: white;
+}
+
+#docgo .comment {
+}
+
+#docgo h1, h2, h3, h4, h5 {
+    text-align: left;
+    margin-top: 0px;
+    margin-right: 0px;
+    margin-bottom: 15px;
+    margin-left: 0px;
+}
+
+#docgo h1 {
+    margin-top: 40px;
+}
+
+#docgo .doc {
+    vertical-align: top;
+    font-family: 'Palatino Linotype', 'Book Antiqua', Palatino, FreeSerif, serif;
+    font-size: 15px;
+    line-height: 22px;
+    color: black;
+    min-width: 450px;
+    max-width: 450px;
+    padding-top: 10px;
+    padding-right: 25px;
+    padding-bottom: 1px;
+    padding-left: 50px;
+    overflow-x: hidden;
+}
+
+#docgo .code {
+    min-width: 650px;
+    max-width: 650px;
+    padding-left: 25px;
+    padding-right: 15px;
+    border-left: 1px;
+    overflow-x: hidden;
+    vertical-align: top;
+}
+
+#docgo .code pre code  {
+    font-size: 12px;
+    line-height: 18px;
+    font-family: Menlo, Monaco, Consolas, "Lucida Console", monospace;
+    color: rgb(120, 120, 120);
+}
+</style>
+</head>
+<body>
+<div id="docgo">
+  <div id="background"></div>
+  <table>
+    <thead><tr><th class="doc"><h1>apiParamsExample_test.go</h1></th><th class="code"></th></tr></thead>
+    <tbody>
+      
+      <tr class="section">
+	<td class="doc"><h1>testable Examples for  rnv Start.Info API (1.12) Parameter.</h1>
+</td>
+	<td class="code"><pre><code><div class="keyword">package</div> <div class="ident">api</div><div class="operator"></div>
+<div class="keyword">import</div> <div class="operator">(</div>
+	<div class="literal">&#34;fmt&#34;</div><div class="operator"></div>
+	<div class="literal">&#34;time&#34;</div><div class="operator"></div>
+<div class="operator">)</div><div class="operator"></div>
+
+<div class="keyword">var</div> <div class="ident">hafasIdValid</div><div class="operator">=</div><div class="operator">[</div><div class="operator">]</div><div class="ident">string</div><div class="operator">{</div><div class="literal">&#34;1236&#34;</div><div class="operator">,</div><div class="literal">&#34;1648&#34;</div><div class="operator">,</div><div class="literal">&#34;125&#34;</div><div class="operator">}</div><div class="operator"></div>
+<div class="keyword">var</div> <div class="ident">hafasIdInValid</div><div class="operator">=</div><div class="operator">[</div><div class="operator">]</div><div class="ident">string</div><div class="operator">{</div><div class="literal">&#34;12A6&#34;</div><div class="operator">,</div><div class="literal">&#34;&#34;</div><div class="operator">,</div><div class="literal">&#34;1234567&#34;</div><div class="operator">}</div><div class="operator"></div>
+
+</code></pre></td>
+      </tr>
+      
+      <tr class="section">
+	<td class="doc"><h2>stations.go Parameter</h2>
+
+<p>TODO implement validtion ...
+func ExampleUpdateParams(){}</p>
+</td>
+	<td class="code"><pre><code>
+</code></pre></td>
+      </tr>
+      
+      <tr class="section">
+	<td class="doc"><h2>news.go Parameter</h2>
+</td>
+	<td class="code"><pre><code>
+<div class="keyword">func</div> <div class="ident">ExampleTickerParams</div><div class="operator">(</div><div class="operator">)</div><div class="operator">{</div>
+	<div class="ident">params</div><div class="operator">:=</div><div class="ident">NewTickerParams</div><div class="operator">(</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">err</div><div class="operator">:=</div><div class="ident">params</div><div class="operator">.</div><div class="ident">Validate</div><div class="operator">(</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">fmt</div><div class="operator">.</div><div class="ident">Println</div><div class="operator">(</div><div class="ident">err</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">fmt</div><div class="operator">.</div><div class="ident">Println</div><div class="operator">(</div><div class="ident">params</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">params</div><div class="operator">,</div><div class="ident">err</div><div class="operator">=</div><div class="ident">params</div><div class="operator">.</div><div class="ident">AddLine</div><div class="operator">(</div><div class="literal">&#34;9&#34;</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">fmt</div><div class="operator">.</div><div class="ident">Println</div><div class="operator">(</div><div class="ident">err</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">fmt</div><div class="operator">.</div><div class="ident">Println</div><div class="operator">(</div><div class="ident">params</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">params</div><div class="operator">,</div><div class="ident">err</div><div class="operator">=</div><div class="ident">params</div><div class="operator">.</div><div class="ident">AddLine</div><div class="operator">(</div><div class="literal">&#34;969325&#34;</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">fmt</div><div class="operator">.</div><div class="ident">Println</div><div class="operator">(</div><div class="ident">err</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">fmt</div><div class="operator">.</div><div class="ident">Println</div><div class="operator">(</div><div class="ident">params</div><div class="operator">)</div><div class="operator"></div>
+</code></pre></td>
+      </tr>
+      
+      <tr class="section">
+	<td class="doc"><p>Output:
+<nil>
+[]
+<nil>
+[9]
+Invalid value for lines or lineId
+[9]</p>
+</td>
+	<td class="code"><pre><code><div class="operator">}</div><div class="operator"></div>
+
+
+</code></pre></td>
+      </tr>
+      
+      <tr class="section">
+	<td class="doc"><h2>lines.go Parameter</h2>
+
+<p>Requests to Fahrtverläufe requrire Data from an Departure Object</p>
+</td>
+	<td class="code"><pre><code>
+<div class="keyword">func</div> <div class="ident">ExampleLineJourneyParams</div><div class="operator">(</div><div class="operator">)</div><div class="operator">{</div>
+</code></pre></td>
+      </tr>
+      
+      <tr class="section">
+	<td class="doc"><p>Requests to Fahrtverläufe requires Data from an Departure Object
+use this method for getting LineJourneyParams</p>
+</td>
+	<td class="code"><pre><code>	<div class="ident">dep</div><div class="operator">:=</div><div class="ident">Departure</div><div class="operator">{</div><div class="literal">&#34;17:03&#43; 0&#34;</div><div class="operator">,</div><div class="literal">&#34;OK&#34;</div><div class="operator">,</div><div class="literal">&#34;Neckarstadt West&#34;</div><div class="operator">,</div><div class="literal">&#34;C&#34;</div><div class="operator">,</div><div class="literal">&#34;STRAB&#34;</div><div class="operator">,</div><div class="literal">&#34;11836-10327-1&#34;</div><div class="operator">,</div><div class="literal">&#34;454AUS&#34;</div><div class="operator">,</div><div class="literal">&#34;15&#34;</div><div class="operator">,</div><div class="literal">&#34;&#34;</div><div class="operator">,</div><div class="literal">&#34;RNV002_RNV002A&#34;</div><div class="operator">,</div><div class="literal">&#34;2&#34;</div><div class="operator">,</div><div class="literal">&#34;0&#34;</div><div class="operator">,</div><div class="literal">&#34;false&#34;</div><div class="operator">,</div><div class="literal">&#34;false&#34;</div><div class="operator">}</div><div class="operator"></div>
+	<div class="ident">params</div><div class="operator">,</div><div class="ident">err</div><div class="operator">:=</div><div class="ident">NewLineJourneyParamsFromDepartureAndStationId</div><div class="operator">(</div><div class="ident">dep</div><div class="operator">,</div><div class="ident">hafasIdValid</div><div class="operator">[</div><div class="literal">0</div><div class="operator">]</div><div class="operator">)</div> <div class="operator"></div><div class="comment">// Note: just an example, the hafasId may not fit to Departure Object</div>
+	<div class="ident">fmt</div><div class="operator">.</div><div class="ident">Println</div><div class="operator">(</div><div class="ident">err</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">y</div> <div class="operator">:=</div> <div class="literal">2017</div><div class="operator"></div>
+	<div class="ident">m</div> <div class="operator">:=</div> <div class="ident">time</div><div class="operator">.</div><div class="ident">March</div><div class="operator"></div>
+	<div class="ident">d</div> <div class="operator">:=</div> <div class="literal">17</div><div class="operator"></div>
+	<div class="ident">h</div> <div class="operator">:=</div> <div class="literal">13</div><div class="operator"></div>
+	<div class="ident">min</div> <div class="operator">:=</div> <div class="literal">24</div><div class="operator"></div>
+	<div class="ident">s</div> <div class="operator">:=</div> <div class="literal">0</div><div class="operator"></div>
+	<div class="ident">t</div> <div class="operator">:=</div> <div class="ident">time</div><div class="operator">.</div><div class="ident">Date</div><div class="operator">(</div><div class="ident">y</div><div class="operator">,</div> <div class="ident">m</div><div class="operator">,</div> <div class="ident">d</div><div class="operator">,</div> <div class="ident">h</div><div class="operator">,</div> <div class="ident">min</div><div class="operator">,</div> <div class="ident">s</div><div class="operator">,</div> <div class="literal">0</div><div class="operator">,</div> <div class="ident">time</div><div class="operator">.</div><div class="ident">UTC</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">params</div><div class="operator">.</div><div class="ident">SetTime</div><div class="operator">(</div><div class="ident">t</div><div class="operator">)</div> <div class="operator"></div><div class="comment">// needs to be set to testable time</div>
+	<div class="ident">params</div><div class="operator">.</div><div class="ident">Validate</div><div class="operator">(</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">fmt</div><div class="operator">.</div><div class="ident">Println</div><div class="operator">(</div><div class="ident">err</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">fmt</div><div class="operator">.</div><div class="ident">Println</div><div class="operator">(</div><div class="ident">params</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">err</div><div class="operator">=</div><div class="ident">params</div><div class="operator">.</div><div class="ident">SetStopIndex</div><div class="operator">(</div><div class="ident">dep</div><div class="operator">.</div><div class="ident">PositionInTour</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">fmt</div><div class="operator">.</div><div class="ident">Println</div><div class="operator">(</div><div class="ident">err</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">fmt</div><div class="operator">.</div><div class="ident">Println</div><div class="operator">(</div><div class="ident">params</div><div class="operator">)</div><div class="operator"></div>
+</code></pre></td>
+      </tr>
+      
+      <tr class="section">
+	<td class="doc"><p>Output:
+<nil>
+<nil>
+{1236 2 0 454 11836-10327-1 2017-03-17+13:24}
+<nil>
+{1236 2 15 454 11836-10327-1 2017-03-17+13:24}</p>
+</td>
+	<td class="code"><pre><code>
+<div class="operator">}</div><div class="operator"></div>
+
+<div class="keyword">func</div> <div class="ident">ExampleCancelledLineParams</div><div class="operator">(</div><div class="operator">)</div><div class="operator">{</div>
+	<div class="ident">params</div><div class="operator">:=</div><div class="ident">CancelledLineParams</div><div class="operator">{</div><div class="ident">nil</div><div class="operator">,</div><div class="ident">nil</div><div class="operator">}</div><div class="operator"></div>
+	<div class="ident">err</div><div class="operator">:=</div><div class="ident">params</div><div class="operator">.</div><div class="ident">Validate</div><div class="operator">(</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">fmt</div><div class="operator">.</div><div class="ident">Println</div><div class="operator">(</div><div class="ident">err</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">fmt</div><div class="operator">.</div><div class="ident">Println</div><div class="operator">(</div><div class="ident">params</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">err</div><div class="operator">=</div><div class="ident">params</div><div class="operator">.</div><div class="ident">SetLineId</div><div class="operator">(</div><div class="literal">&#34;23&#34;</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">fmt</div><div class="operator">.</div><div class="ident">Println</div><div class="operator">(</div><div class="ident">err</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">fmt</div><div class="operator">.</div><div class="ident">Println</div><div class="operator">(</div><div class="ident">params</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">err</div><div class="operator">=</div><div class="ident">params</div><div class="operator">.</div><div class="ident">SetLineId</div><div class="operator">(</div><div class="literal">&#34;4 / 4A&#34;</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">fmt</div><div class="operator">.</div><div class="ident">Println</div><div class="operator">(</div><div class="ident">err</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">fmt</div><div class="operator">.</div><div class="ident">Println</div><div class="operator">(</div><div class="ident">params</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">err</div><div class="operator">=</div><div class="ident">params</div><div class="operator">.</div><div class="ident">SetLineId</div><div class="operator">(</div><div class="literal">&#34;23B&#34;</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">fmt</div><div class="operator">.</div><div class="ident">Println</div><div class="operator">(</div><div class="ident">err</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">fmt</div><div class="operator">.</div><div class="ident">Println</div><div class="operator">(</div><div class="ident">params</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">y</div> <div class="operator">:=</div> <div class="literal">2017</div><div class="operator"></div>
+	<div class="ident">m</div> <div class="operator">:=</div> <div class="ident">time</div><div class="operator">.</div><div class="ident">March</div><div class="operator"></div>
+	<div class="ident">d</div> <div class="operator">:=</div> <div class="literal">17</div><div class="operator"></div>
+	<div class="ident">h</div> <div class="operator">:=</div> <div class="literal">13</div><div class="operator"></div>
+	<div class="ident">min</div> <div class="operator">:=</div> <div class="literal">24</div><div class="operator"></div>
+	<div class="ident">s</div> <div class="operator">:=</div> <div class="literal">0</div><div class="operator"></div>
+	<div class="ident">t</div> <div class="operator">:=</div> <div class="ident">time</div><div class="operator">.</div><div class="ident">Date</div><div class="operator">(</div><div class="ident">y</div><div class="operator">,</div> <div class="ident">m</div><div class="operator">,</div> <div class="ident">d</div><div class="operator">,</div> <div class="ident">h</div><div class="operator">,</div> <div class="ident">min</div><div class="operator">,</div> <div class="ident">s</div><div class="operator">,</div> <div class="literal">0</div><div class="operator">,</div> <div class="ident">time</div><div class="operator">.</div><div class="ident">UTC</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">params</div><div class="operator">.</div><div class="ident">SetDepartureTime</div><div class="operator">(</div><div class="ident">t</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">err</div><div class="operator">=</div><div class="ident">params</div><div class="operator">.</div><div class="ident">Validate</div><div class="operator">(</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">fmt</div><div class="operator">.</div><div class="ident">Println</div><div class="operator">(</div><div class="ident">err</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">fmt</div><div class="operator">.</div><div class="ident">Println</div><div class="operator">(</div><div class="ident">params</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">ivT</div><div class="operator">:=</div><div class="literal">&#34;2017-03-17&#43;11:00&#34;</div><div class="operator"></div>
+	<div class="ident">params</div><div class="operator">.</div><div class="ident">DepartureTime</div><div class="operator">=</div><div class="operator">&amp;</div><div class="ident">ivT</div><div class="operator"></div>
+	<div class="ident">err</div><div class="operator">=</div><div class="ident">params</div><div class="operator">.</div><div class="ident">Validate</div><div class="operator">(</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">fmt</div><div class="operator">.</div><div class="ident">Println</div><div class="operator">(</div><div class="ident">err</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">fmt</div><div class="operator">.</div><div class="ident">Println</div><div class="operator">(</div><div class="ident">params</div><div class="operator">)</div><div class="operator"></div>
+</code></pre></td>
+      </tr>
+      
+      <tr class="section">
+	<td class="doc"><p>Output:
+<nil>
+{<nil> <nil>}
+<nil>
+{23 <nil>}
+Invalid value for lines or lineId
+{23 <nil>}
+Invalid value for lines or lineId
+{23 <nil>}
+<nil>
+{23 1489757040}
+Invalid value for time or departureTime
+{23 <nil>}</p>
+</td>
+	<td class="code"><pre><code>
+
+<div class="operator">}</div><div class="operator"></div>
+
+</code></pre></td>
+      </tr>
+      
+      <tr class="section">
+	<td class="doc"><h2>info.go Parameter</h2>
+</td>
+	<td class="code"><pre><code>
+<div class="keyword">func</div> <div class="ident">ExampleJourneyInfoTranserParams</div><div class="operator">(</div><div class="operator">)</div><div class="operator">{</div>
+	<div class="ident">params</div><div class="operator">:=</div><div class="ident">JourneyInfoTranserParams</div><div class="operator">{</div><div class="ident">nil</div><div class="operator">,</div><div class="ident">nil</div><div class="operator">,</div><div class="ident">nil</div><div class="operator">}</div><div class="operator"></div>
+	<div class="ident">fmt</div><div class="operator">.</div><div class="ident">Println</div><div class="operator">(</div><div class="ident">params</div><div class="operator">)</div><div class="operator"></div>
+</code></pre></td>
+      </tr>
+      
+      <tr class="section">
+	<td class="doc"><p>Setting Poles</p>
+</td>
+	<td class="code"><pre><code>	<div class="ident">err</div><div class="operator">:=</div><div class="ident">params</div><div class="operator">.</div><div class="ident">AddPole</div><div class="operator">(</div><div class="literal">&#34;3&#34;</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">fmt</div><div class="operator">.</div><div class="ident">Println</div><div class="operator">(</div><div class="ident">err</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">fmt</div><div class="operator">.</div><div class="ident">Println</div><div class="operator">(</div><div class="ident">params</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">err</div><div class="operator">=</div><div class="ident">params</div><div class="operator">.</div><div class="ident">AddPole</div><div class="operator">(</div><div class="literal">&#34;A&#34;</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">fmt</div><div class="operator">.</div><div class="ident">Println</div><div class="operator">(</div><div class="ident">err</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">fmt</div><div class="operator">.</div><div class="ident">Println</div><div class="operator">(</div><div class="ident">params</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">err</div><div class="operator">=</div><div class="ident">params</div><div class="operator">.</div><div class="ident">AddPole</div><div class="operator">(</div><div class="literal">&#34;356&#34;</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">fmt</div><div class="operator">.</div><div class="ident">Println</div><div class="operator">(</div><div class="ident">err</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">fmt</div><div class="operator">.</div><div class="ident">Println</div><div class="operator">(</div><div class="ident">params</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">err</div><div class="operator">=</div><div class="ident">params</div><div class="operator">.</div><div class="ident">AddPole</div><div class="operator">(</div><div class="literal">&#34;03&#34;</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">fmt</div><div class="operator">.</div><div class="ident">Println</div><div class="operator">(</div><div class="ident">err</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">fmt</div><div class="operator">.</div><div class="ident">Println</div><div class="operator">(</div><div class="ident">params</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">err</div><div class="operator">=</div><div class="ident">params</div><div class="operator">.</div><div class="ident">Validate</div><div class="operator">(</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">fmt</div><div class="operator">.</div><div class="ident">Println</div><div class="operator">(</div><div class="ident">err</div><div class="operator">)</div><div class="operator"></div>
+</code></pre></td>
+      </tr>
+      
+      <tr class="section">
+	<td class="doc"><p>Setting departureTime</p>
+</td>
+	<td class="code"><pre><code>	<div class="ident">y</div> <div class="operator">:=</div> <div class="literal">2017</div><div class="operator"></div>
+	<div class="ident">m</div> <div class="operator">:=</div> <div class="ident">time</div><div class="operator">.</div><div class="ident">March</div><div class="operator"></div>
+	<div class="ident">d</div> <div class="operator">:=</div> <div class="literal">17</div><div class="operator"></div>
+	<div class="ident">h</div> <div class="operator">:=</div> <div class="literal">13</div><div class="operator"></div>
+	<div class="ident">min</div> <div class="operator">:=</div> <div class="literal">24</div><div class="operator"></div>
+	<div class="ident">s</div> <div class="operator">:=</div> <div class="literal">0</div><div class="operator"></div>
+	<div class="ident">t</div> <div class="operator">:=</div> <div class="ident">time</div><div class="operator">.</div><div class="ident">Date</div><div class="operator">(</div><div class="ident">y</div><div class="operator">,</div> <div class="ident">m</div><div class="operator">,</div> <div class="ident">d</div><div class="operator">,</div> <div class="ident">h</div><div class="operator">,</div> <div class="ident">min</div><div class="operator">,</div> <div class="ident">s</div><div class="operator">,</div> <div class="literal">0</div><div class="operator">,</div> <div class="ident">time</div><div class="operator">.</div><div class="ident">UTC</div><div class="operator">)</div><div class="operator"></div>
+</code></pre></td>
+      </tr>
+      
+      <tr class="section">
+	<td class="doc"><p>set to a time</p>
+</td>
+	<td class="code"><pre><code>	<div class="ident">params</div><div class="operator">.</div><div class="ident">SetDepartureTime</div><div class="operator">(</div><div class="ident">t</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">err</div><div class="operator">=</div><div class="ident">params</div><div class="operator">.</div><div class="ident">Validate</div><div class="operator">(</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">fmt</div><div class="operator">.</div><div class="ident">Println</div><div class="operator">(</div><div class="ident">err</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">fmt</div><div class="operator">.</div><div class="ident">Println</div><div class="operator">(</div><div class="ident">params</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">tString</div><div class="operator">:=</div><div class="literal">&#34; &#34;</div><div class="operator"></div>
+	<div class="ident">params</div><div class="operator">.</div><div class="ident">DepartureTime</div><div class="operator">=</div><div class="operator">&amp;</div><div class="ident">tString</div><div class="operator"></div>
+	<div class="ident">err</div><div class="operator">=</div><div class="ident">params</div><div class="operator">.</div><div class="ident">Validate</div><div class="operator">(</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">fmt</div><div class="operator">.</div><div class="ident">Println</div><div class="operator">(</div><div class="ident">err</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">fmt</div><div class="operator">.</div><div class="ident">Println</div><div class="operator">(</div><div class="ident">params</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">params</div><div class="operator">.</div><div class="ident">DepartureTime</div><div class="operator">=</div><div class="ident">nil</div><div class="operator"></div>
+</code></pre></td>
+      </tr>
+      
+      <tr class="section">
+	<td class="doc"><p>Set hafasId</p>
+</td>
+	<td class="code"><pre><code>	<div class="ident">params</div><div class="operator">.</div><div class="ident">HafasId</div><div class="operator">=</div><div class="operator">&amp;</div><div class="ident">hafasIdValid</div><div class="operator">[</div><div class="literal">2</div><div class="operator">]</div><div class="operator"></div>
+	<div class="ident">err</div><div class="operator">=</div><div class="ident">params</div><div class="operator">.</div><div class="ident">Validate</div><div class="operator">(</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">fmt</div><div class="operator">.</div><div class="ident">Println</div><div class="operator">(</div><div class="ident">err</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">fmt</div><div class="operator">.</div><div class="ident">Println</div><div class="operator">(</div><div class="ident">params</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">params</div><div class="operator">.</div><div class="ident">HafasId</div><div class="operator">=</div><div class="operator">&amp;</div><div class="ident">hafasIdInValid</div><div class="operator">[</div><div class="literal">2</div><div class="operator">]</div><div class="operator"></div>
+	<div class="ident">err</div><div class="operator">=</div><div class="ident">params</div><div class="operator">.</div><div class="ident">Validate</div><div class="operator">(</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">fmt</div><div class="operator">.</div><div class="ident">Println</div><div class="operator">(</div><div class="ident">err</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">fmt</div><div class="operator">.</div><div class="ident">Println</div><div class="operator">(</div><div class="ident">params</div><div class="operator">)</div><div class="operator"></div>
+
+</code></pre></td>
+      </tr>
+      
+      <tr class="section">
+	<td class="doc"><p>Output:
+{<nil> <nil> <nil>}
+<nil>
+{<nil> [3] <nil>}
+Invalid value for poles
+{<nil> [3] <nil>}
+Invalid value for poles
+{<nil> [3] <nil>}
+<nil>
+{<nil> [3 03] <nil>}
+Not valid Combination of JourneyInfoTranser. Valid Combinations are:  HafasId | HafasId + Poles | HafasId + DepartureTime | HafasId + DepartureTime + Poles | DepartureTime
+<nil>
+{<nil> [3 03] 1489757040}
+Invalid value for time or departureTime
+{<nil> [3 03]  }
+<nil>
+{125 [3 03] <nil>}
+Invalid value for stationId or hafasId
+{1234567 [3 03] <nil>}</p>
+</td>
+	<td class="code"><pre><code><div class="operator">}</div><div class="operator"></div>
+
+</code></pre></td>
+      </tr>
+      
+      <tr class="section">
+	<td class="doc"></td>
+	<td class="code"><pre><code><div class="keyword">func</div> <div class="ident">ExampleStationInfoTranserParams</div><div class="operator">(</div><div class="operator">)</div><div class="operator">{</div>
+	<div class="ident">params</div><div class="operator">:=</div><div class="ident">StationInfoTransferParams</div><div class="operator">{</div><div class="ident">nil</div><div class="operator">,</div><div class="ident">nil</div><div class="operator">,</div><div class="ident">nil</div><div class="operator">}</div><div class="operator"></div>
+	<div class="ident">err</div><div class="operator">:=</div><div class="ident">params</div><div class="operator">.</div><div class="ident">Validate</div><div class="operator">(</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">fmt</div><div class="operator">.</div><div class="ident">Println</div><div class="operator">(</div><div class="ident">err</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">fmt</div><div class="operator">.</div><div class="ident">Println</div><div class="operator">(</div><div class="ident">params</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">err</div><div class="operator">=</div><div class="ident">params</div><div class="operator">.</div><div class="ident">AddLine</div><div class="operator">(</div><div class="literal">&#34;1&#34;</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">fmt</div><div class="operator">.</div><div class="ident">Println</div><div class="operator">(</div><div class="ident">err</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">fmt</div><div class="operator">.</div><div class="ident">Println</div><div class="operator">(</div><div class="ident">params</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">err</div><div class="operator">=</div><div class="ident">params</div><div class="operator">.</div><div class="ident">AddLine</div><div class="operator">(</div><div class="literal">&#34;4A&#34;</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">fmt</div><div class="operator">.</div><div class="ident">Println</div><div class="operator">(</div><div class="ident">err</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">fmt</div><div class="operator">.</div><div class="ident">Println</div><div class="operator">(</div><div class="ident">params</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">err</div><div class="operator">=</div><div class="ident">params</div><div class="operator">.</div><div class="ident">AddLine</div><div class="operator">(</div><div class="literal">&#34;368&#34;</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">fmt</div><div class="operator">.</div><div class="ident">Println</div><div class="operator">(</div><div class="ident">err</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">fmt</div><div class="operator">.</div><div class="ident">Println</div><div class="operator">(</div><div class="ident">params</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">err</div><div class="operator">=</div><div class="ident">params</div><div class="operator">.</div><div class="ident">AddLine</div><div class="operator">(</div><div class="literal">&#34;LA&#34;</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">fmt</div><div class="operator">.</div><div class="ident">Println</div><div class="operator">(</div><div class="ident">err</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">fmt</div><div class="operator">.</div><div class="ident">Println</div><div class="operator">(</div><div class="ident">params</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">err</div><div class="operator">=</div><div class="ident">params</div><div class="operator">.</div><div class="ident">AddLine</div><div class="operator">(</div><div class="literal">&#34;5896&#34;</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">fmt</div><div class="operator">.</div><div class="ident">Println</div><div class="operator">(</div><div class="ident">err</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">fmt</div><div class="operator">.</div><div class="ident">Println</div><div class="operator">(</div><div class="ident">params</div><div class="operator">)</div><div class="operator"></div>
+</code></pre></td>
+      </tr>
+      
+      <tr class="section">
+	<td class="doc"><p>Setting departureTime</p>
+</td>
+	<td class="code"><pre><code>	<div class="ident">y</div> <div class="operator">:=</div> <div class="literal">2017</div><div class="operator"></div>
+	<div class="ident">m</div> <div class="operator">:=</div> <div class="ident">time</div><div class="operator">.</div><div class="ident">March</div><div class="operator"></div>
+	<div class="ident">d</div> <div class="operator">:=</div> <div class="literal">17</div><div class="operator"></div>
+	<div class="ident">h</div> <div class="operator">:=</div> <div class="literal">13</div><div class="operator"></div>
+	<div class="ident">min</div> <div class="operator">:=</div> <div class="literal">24</div><div class="operator"></div>
+	<div class="ident">s</div> <div class="operator">:=</div> <div class="literal">0</div><div class="operator"></div>
+	<div class="ident">t</div> <div class="operator">:=</div> <div class="ident">time</div><div class="operator">.</div><div class="ident">Date</div><div class="operator">(</div><div class="ident">y</div><div class="operator">,</div> <div class="ident">m</div><div class="operator">,</div> <div class="ident">d</div><div class="operator">,</div> <div class="ident">h</div><div class="operator">,</div> <div class="ident">min</div><div class="operator">,</div> <div class="ident">s</div><div class="operator">,</div> <div class="literal">0</div><div class="operator">,</div> <div class="ident">time</div><div class="operator">.</div><div class="ident">UTC</div><div class="operator">)</div><div class="operator"></div>
+</code></pre></td>
+      </tr>
+      
+      <tr class="section">
+	<td class="doc"><p>set to a time</p>
+</td>
+	<td class="code"><pre><code>	<div class="ident">params</div><div class="operator">.</div><div class="ident">SetDepartureTime</div><div class="operator">(</div><div class="ident">t</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">err</div><div class="operator">=</div><div class="ident">params</div><div class="operator">.</div><div class="ident">Validate</div><div class="operator">(</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">fmt</div><div class="operator">.</div><div class="ident">Println</div><div class="operator">(</div><div class="ident">err</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">fmt</div><div class="operator">.</div><div class="ident">Println</div><div class="operator">(</div><div class="ident">params</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">tString</div><div class="operator">:=</div><div class="literal">&#34; &#34;</div><div class="operator"></div>
+	<div class="ident">params</div><div class="operator">.</div><div class="ident">DepartureTime</div><div class="operator">=</div><div class="operator">&amp;</div><div class="ident">tString</div><div class="operator"></div>
+	<div class="ident">err</div><div class="operator">=</div><div class="ident">params</div><div class="operator">.</div><div class="ident">Validate</div><div class="operator">(</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">fmt</div><div class="operator">.</div><div class="ident">Println</div><div class="operator">(</div><div class="ident">err</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">fmt</div><div class="operator">.</div><div class="ident">Println</div><div class="operator">(</div><div class="ident">params</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">params</div><div class="operator">.</div><div class="ident">DepartureTime</div><div class="operator">=</div><div class="ident">GetTimeUnix</div><div class="operator">(</div><div class="ident">t</div><div class="operator">)</div><div class="operator"></div>
+</code></pre></td>
+      </tr>
+      
+      <tr class="section">
+	<td class="doc"><p>Set hafasId</p>
+</td>
+	<td class="code"><pre><code>	<div class="ident">params</div><div class="operator">.</div><div class="ident">HafasId</div><div class="operator">=</div><div class="operator">&amp;</div><div class="ident">hafasIdValid</div><div class="operator">[</div><div class="literal">0</div><div class="operator">]</div><div class="operator"></div>
+	<div class="ident">err</div><div class="operator">=</div><div class="ident">params</div><div class="operator">.</div><div class="ident">Validate</div><div class="operator">(</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">fmt</div><div class="operator">.</div><div class="ident">Println</div><div class="operator">(</div><div class="ident">err</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">fmt</div><div class="operator">.</div><div class="ident">Println</div><div class="operator">(</div><div class="ident">params</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">params</div><div class="operator">.</div><div class="ident">HafasId</div><div class="operator">=</div><div class="operator">&amp;</div><div class="ident">hafasIdInValid</div><div class="operator">[</div><div class="literal">0</div><div class="operator">]</div><div class="operator"></div>
+	<div class="ident">err</div><div class="operator">=</div><div class="ident">params</div><div class="operator">.</div><div class="ident">Validate</div><div class="operator">(</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">fmt</div><div class="operator">.</div><div class="ident">Println</div><div class="operator">(</div><div class="ident">err</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">fmt</div><div class="operator">.</div><div class="ident">Println</div><div class="operator">(</div><div class="ident">params</div><div class="operator">)</div><div class="operator"></div>
+</code></pre></td>
+      </tr>
+      
+      <tr class="section">
+	<td class="doc"><p>Output:
+<nil>
+{<nil> <nil> <nil>}
+<nil>
+{[1] <nil> <nil>}
+<nil>
+{[1 4A] <nil> <nil>}
+<nil>
+{[1 4A 368] <nil> <nil>}
+Invalid value for lines or lineId
+{[1 4A 368] <nil> <nil>}
+Invalid value for lines or lineId
+{[1 4A 368] <nil> <nil>}
+<nil>
+{[1 4A 368] <nil> 1489757040}
+Invalid value for time or departureTime
+{[1 4A 368] <nil>  }
+<nil>
+{[1 4A 368] 1236 1489757040}
+Invalid value for stationId or hafasId
+{[1 4A 368] 12A6 1489757040}</p>
+</td>
+	<td class="code"><pre><code>
+<div class="operator">}</div><div class="operator"></div>
+
+
+</code></pre></td>
+      </tr>
+      
+      <tr class="section">
+	<td class="doc"><h2>maps.go Parameter</h2>
+</td>
+	<td class="code"><pre><code>
+<div class="keyword">func</div> <div class="ident">ExampleMapEntityParams</div><div class="operator">(</div><div class="operator">)</div><div class="operator">{</div>
+	<div class="ident">params</div><div class="operator">:=</div><div class="ident">MapEntityParams</div><div class="operator">{</div><div class="ident">nil</div><div class="operator">,</div><div class="ident">nil</div><div class="operator">}</div><div class="operator"></div>
+	<div class="ident">err</div><div class="operator">:=</div><div class="ident">params</div><div class="operator">.</div><div class="ident">Validate</div><div class="operator">(</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">fmt</div><div class="operator">.</div><div class="ident">Println</div><div class="operator">(</div><div class="ident">params</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">fmt</div><div class="operator">.</div><div class="ident">Println</div><div class="operator">(</div><div class="ident">err</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">pTS</div><div class="operator">:=</div><div class="ident">GetSupportedThumbnailSizes</div><div class="operator">(</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">pF</div><div class="operator">:=</div><div class="ident">GetSupportedFormats</div><div class="operator">(</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">params</div><div class="operator">.</div><div class="ident">ThumbnailSize</div><div class="operator">=</div><div class="operator">&amp;</div><div class="ident">pTS</div><div class="operator">[</div><div class="literal">3</div><div class="operator">]</div><div class="operator"></div>
+	<div class="ident">err</div><div class="operator">=</div><div class="ident">params</div><div class="operator">.</div><div class="ident">Validate</div><div class="operator">(</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">fmt</div><div class="operator">.</div><div class="ident">Println</div><div class="operator">(</div><div class="ident">params</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">fmt</div><div class="operator">.</div><div class="ident">Println</div><div class="operator">(</div><div class="ident">err</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">ivTS</div><div class="operator">:=</div><div class="literal">&#34;111&#34;</div><div class="operator"></div>
+	<div class="ident">params</div><div class="operator">.</div><div class="ident">ThumbnailSize</div><div class="operator">=</div><div class="operator">&amp;</div><div class="ident">ivTS</div><div class="operator"></div>
+	<div class="ident">err</div><div class="operator">=</div><div class="ident">params</div><div class="operator">.</div><div class="ident">Validate</div><div class="operator">(</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">fmt</div><div class="operator">.</div><div class="ident">Println</div><div class="operator">(</div><div class="ident">params</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">fmt</div><div class="operator">.</div><div class="ident">Println</div><div class="operator">(</div><div class="ident">err</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">params</div><div class="operator">.</div><div class="ident">Format</div><div class="operator">=</div><div class="operator">&amp;</div><div class="ident">pF</div><div class="operator">[</div><div class="literal">0</div><div class="operator">]</div><div class="operator"></div>
+	<div class="ident">err</div><div class="operator">=</div><div class="ident">params</div><div class="operator">.</div><div class="ident">Validate</div><div class="operator">(</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">fmt</div><div class="operator">.</div><div class="ident">Println</div><div class="operator">(</div><div class="ident">params</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">fmt</div><div class="operator">.</div><div class="ident">Println</div><div class="operator">(</div><div class="ident">err</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">ivF</div><div class="operator">:=</div><div class="literal">&#34;jpg&#34;</div><div class="operator"></div>
+	<div class="ident">params</div><div class="operator">.</div><div class="ident">Format</div><div class="operator">=</div><div class="operator">&amp;</div><div class="ident">ivF</div><div class="operator"></div>
+	<div class="ident">err</div><div class="operator">=</div><div class="ident">params</div><div class="operator">.</div><div class="ident">Validate</div><div class="operator">(</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">fmt</div><div class="operator">.</div><div class="ident">Println</div><div class="operator">(</div><div class="ident">params</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">fmt</div><div class="operator">.</div><div class="ident">Println</div><div class="operator">(</div><div class="ident">err</div><div class="operator">)</div><div class="operator"></div>
+</code></pre></td>
+      </tr>
+      
+      <tr class="section">
+	<td class="doc"><p>Output:
+{<nil> <nil>}
+<nil>
+{256 <nil>}
+<nil>
+{<nil> <nil>}
+Invalid value for MapEntityParams.ThumbnailSize
+{<nil> pdf}
+<nil>
+{<nil> <nil>}
+Invalid value for MapEntityParams.Format</p>
+</td>
+	<td class="code"><pre><code><div class="operator">}</div><div class="operator"></div>
+
+</code></pre></td>
+      </tr>
+      
+      <tr class="section">
+	<td class="doc"><h2>stationMonitor.go Parameter</h2>
+</td>
+	<td class="code"><pre><code>
+<div class="keyword">func</div> <div class="ident">ExampleJourneyParams</div><div class="operator">(</div><div class="operator">)</div><div class="operator">{</div>
+	<div class="ident">params</div><div class="operator">,</div><div class="ident">err</div><div class="operator">:=</div><div class="ident">NewJourneyParams</div><div class="operator">(</div><div class="ident">hafasIdInValid</div><div class="operator">[</div><div class="literal">1</div><div class="operator">]</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">fmt</div><div class="operator">.</div><div class="ident">Println</div><div class="operator">(</div><div class="ident">params</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">fmt</div><div class="operator">.</div><div class="ident">Println</div><div class="operator">(</div><div class="ident">err</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">params</div><div class="operator">,</div><div class="ident">err</div><div class="operator">=</div><div class="ident">NewJourneyParams</div><div class="operator">(</div><div class="ident">hafasIdValid</div><div class="operator">[</div><div class="literal">1</div><div class="operator">]</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">fmt</div><div class="operator">.</div><div class="ident">Println</div><div class="operator">(</div><div class="ident">params</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">fmt</div><div class="operator">.</div><div class="ident">Println</div><div class="operator">(</div><div class="ident">err</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">y</div> <div class="operator">:=</div> <div class="literal">2017</div><div class="operator"></div>
+	<div class="ident">m</div> <div class="operator">:=</div> <div class="ident">time</div><div class="operator">.</div><div class="ident">March</div><div class="operator"></div>
+	<div class="ident">d</div> <div class="operator">:=</div> <div class="literal">17</div><div class="operator"></div>
+	<div class="ident">h</div> <div class="operator">:=</div> <div class="literal">13</div><div class="operator"></div>
+	<div class="ident">min</div> <div class="operator">:=</div> <div class="literal">24</div><div class="operator"></div>
+	<div class="ident">s</div> <div class="operator">:=</div> <div class="literal">0</div><div class="operator"></div>
+	<div class="ident">t</div> <div class="operator">:=</div> <div class="ident">time</div><div class="operator">.</div><div class="ident">Date</div><div class="operator">(</div><div class="ident">y</div><div class="operator">,</div> <div class="ident">m</div><div class="operator">,</div> <div class="ident">d</div><div class="operator">,</div> <div class="ident">h</div><div class="operator">,</div> <div class="ident">min</div><div class="operator">,</div> <div class="ident">s</div><div class="operator">,</div> <div class="literal">0</div><div class="operator">,</div> <div class="ident">time</div><div class="operator">.</div><div class="ident">UTC</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">params</div><div class="operator">.</div><div class="ident">SetTime</div><div class="operator">(</div><div class="ident">t</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">err</div><div class="operator">=</div><div class="ident">params</div><div class="operator">.</div><div class="ident">Validate</div><div class="operator">(</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">fmt</div><div class="operator">.</div><div class="ident">Println</div><div class="operator">(</div><div class="ident">params</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">fmt</div><div class="operator">.</div><div class="ident">Println</div><div class="operator">(</div><div class="ident">err</div><div class="operator">)</div><div class="operator"></div>
+</code></pre></td>
+      </tr>
+      
+      <tr class="section">
+	<td class="doc"><p>for more examples for poles see ExampleJourneyInfoTranserParams</p>
+</td>
+	<td class="code"><pre><code>	<div class="ident">err</div><div class="operator">=</div><div class="ident">params</div><div class="operator">.</div><div class="ident">SetPoles</div><div class="operator">(</div><div class="operator">[</div><div class="operator">]</div><div class="ident">string</div><div class="operator">{</div><div class="literal">&#34;5&#34;</div><div class="operator">,</div><div class="literal">&#34;13&#34;</div><div class="operator">,</div><div class="literal">&#34;1235&#34;</div><div class="operator">}</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">fmt</div><div class="operator">.</div><div class="ident">Println</div><div class="operator">(</div><div class="ident">err</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">err</div><div class="operator">=</div><div class="ident">params</div><div class="operator">.</div><div class="ident">Validate</div><div class="operator">(</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">fmt</div><div class="operator">.</div><div class="ident">Println</div><div class="operator">(</div><div class="ident">params</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">fmt</div><div class="operator">.</div><div class="ident">Println</div><div class="operator">(</div><div class="ident">err</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">pM</div><div class="operator">:=</div><div class="ident">GetSupportedModes</div><div class="operator">(</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">params</div><div class="operator">.</div><div class="ident">Mode</div><div class="operator">=</div><div class="ident">pM</div><div class="operator">[</div><div class="literal">1</div><div class="operator">]</div><div class="operator"></div>
+	<div class="ident">err</div><div class="operator">=</div><div class="ident">params</div><div class="operator">.</div><div class="ident">Validate</div><div class="operator">(</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">fmt</div><div class="operator">.</div><div class="ident">Println</div><div class="operator">(</div><div class="ident">params</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">fmt</div><div class="operator">.</div><div class="ident">Println</div><div class="operator">(</div><div class="ident">err</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">params</div><div class="operator">.</div><div class="ident">Mode</div><div class="operator">=</div><div class="literal">&#34;departure&#34;</div><div class="operator"></div>
+	<div class="ident">fmt</div><div class="operator">.</div><div class="ident">Println</div><div class="operator">(</div><div class="ident">params</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">err</div><div class="operator">=</div><div class="ident">params</div><div class="operator">.</div><div class="ident">Validate</div><div class="operator">(</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">fmt</div><div class="operator">.</div><div class="ident">Println</div><div class="operator">(</div><div class="ident">params</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">fmt</div><div class="operator">.</div><div class="ident">Println</div><div class="operator">(</div><div class="ident">err</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">params</div><div class="operator">.</div><div class="ident">SetPlatformDetailNeeded</div><div class="operator">(</div><div class="ident">true</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">err</div><div class="operator">=</div><div class="ident">params</div><div class="operator">.</div><div class="ident">Validate</div><div class="operator">(</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">fmt</div><div class="operator">.</div><div class="ident">Println</div><div class="operator">(</div><div class="ident">params</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">fmt</div><div class="operator">.</div><div class="ident">Println</div><div class="operator">(</div><div class="ident">err</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">params</div><div class="operator">.</div><div class="ident">NeedPlatformDetail</div><div class="operator">=</div><div class="literal">&#34;ja&#34;</div><div class="operator"></div>
+	<div class="ident">fmt</div><div class="operator">.</div><div class="ident">Println</div><div class="operator">(</div><div class="ident">params</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">err</div><div class="operator">=</div><div class="ident">params</div><div class="operator">.</div><div class="ident">Validate</div><div class="operator">(</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">fmt</div><div class="operator">.</div><div class="ident">Println</div><div class="operator">(</div><div class="ident">params</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">fmt</div><div class="operator">.</div><div class="ident">Println</div><div class="operator">(</div><div class="ident">err</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">err</div><div class="operator">=</div><div class="ident">params</div><div class="operator">.</div><div class="ident">SetTransportFilter</div><div class="operator">(</div><div class="literal">&#34;2365&#34;</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">fmt</div><div class="operator">.</div><div class="ident">Println</div><div class="operator">(</div><div class="ident">params</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">fmt</div><div class="operator">.</div><div class="ident">Println</div><div class="operator">(</div><div class="ident">err</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">err</div><div class="operator">=</div><div class="ident">params</div><div class="operator">.</div><div class="ident">SetTransportFilter</div><div class="operator">(</div><div class="literal">&#34;22&#34;</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">fmt</div><div class="operator">.</div><div class="ident">Println</div><div class="operator">(</div><div class="ident">params</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">fmt</div><div class="operator">.</div><div class="ident">Println</div><div class="operator">(</div><div class="ident">err</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">_</div><div class="operator">,</div><div class="ident">err</div><div class="operator">,</div><div class="ident">_</div><div class="operator">=</div><div class="ident">params</div><div class="operator">.</div><div class="ident">GetAsUrlParams</div><div class="operator">(</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">fmt</div><div class="operator">.</div><div class="ident">Println</div><div class="operator">(</div><div class="ident">err</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">isNotValidTimeParameter</div><div class="operator">:=</div><div class="literal">&#34;17.03.2017 14:2&#34;</div><div class="operator"></div>
+	<div class="ident">params</div><div class="operator">.</div><div class="ident">Time</div><div class="operator">=</div><div class="operator">&amp;</div><div class="ident">isNotValidTimeParameter</div><div class="operator"></div>
+	<div class="ident">err</div><div class="operator">=</div><div class="ident">params</div><div class="operator">.</div><div class="ident">Validate</div><div class="operator">(</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">fmt</div><div class="operator">.</div><div class="ident">Println</div><div class="operator">(</div><div class="ident">params</div><div class="operator">)</div> <div class="operator"></div><div class="comment">// the invalid value will not be resetted. But it isn&#39;t possible to make a request.</div>
+	<div class="ident">fmt</div><div class="operator">.</div><div class="ident">Println</div><div class="operator">(</div><div class="ident">err</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">_</div><div class="operator">,</div><div class="ident">err</div><div class="operator">,</div><div class="ident">_</div><div class="operator">=</div><div class="ident">params</div><div class="operator">.</div><div class="ident">GetAsUrlParams</div><div class="operator">(</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">fmt</div><div class="operator">.</div><div class="ident">Println</div><div class="operator">(</div><div class="ident">err</div><div class="operator">)</div><div class="operator"></div>
+</code></pre></td>
+      </tr>
+      
+      <tr class="section">
+	<td class="doc"><p>Output:
+{1125 null <nil> DEP false <nil>}
+Invalid value for stationId or hafasId
+{1648 null <nil> DEP false <nil>}
+<nil>
+{1648 2017-03-17+13:24 <nil> DEP false <nil>}
+<nil>
+Invalid value for poles
+{1648 2017-03-17+13:24 [5 13] DEP false <nil>}
+<nil>
+{1648 2017-03-17+13:24 [5 13] ARR false <nil>}
+<nil>
+{1648 2017-03-17+13:24 [5 13] departure false <nil>}
+{1648 2017-03-17+13:24 [5 13] DEP false <nil>}
+Invalid value for JourneyParams.Mode
+{1648 2017-03-17+13:24 [5 13] DEP true <nil>}
+<nil>
+{1648 2017-03-17+13:24 [5 13] DEP ja <nil>}
+{1648 2017-03-17+13:24 [5 13] DEP false <nil>}
+Invalid value for JourneyParams.NeedPlatformDetail
+{1648 2017-03-17+13:24 [5 13] DEP false <nil>}
+Invalid value for lines or lineId
+{1648 2017-03-17+13:24 [5 13] DEP false 22}
+<nil>
+<nil>
+{1648 17.03.2017 14:2 [5 13] DEP false 22}
+Invalid value for time or departureTime
+Invalid value for time or departureTime</p>
+</td>
+	<td class="code"><pre><code><div class="operator">}</div><div class="operator"></div>
+
+</code></pre></td>
+      </tr>
+      
+    </tbody>
+  </table>
+</div>
+</body>
+</html>

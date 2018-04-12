@@ -1,0 +1,4 @@
+// For accessing the rnv "Start.Info" API you need a token.
+ {
+    "token":"yourToken"
+}

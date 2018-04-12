@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>apiUtility.go</title>
+<meta charset="utf-8"/>
+<style type="text/css">body {
+    background: rgb(225, 225, 225);
+    margin: 0px;
+    padding: 0px;
+}
+
+#docgo p {
+    margin-top: 0px;
+    margin-right: 0px;
+    margin-bottom: 15px;
+    margin-left: 0px;
+}
+
+#docgo div {
+    display: inline;
+}
+
+#docgo #background {
+    position: fixed;
+    top: 0; left: 525px; right: 0; bottom: 0;
+    background: rgb(47, 47, 47);
+    border-left: 1px solid #e5e5ee;
+    z-index: -1;
+}
+
+#docgo .keyword {
+    color: rgb(250, 200, 100);
+}
+
+#docgo .literal {
+    color: rgb(140, 190, 100);
+}
+
+#docgo .ident {
+    color: white;
+}
+
+#docgo .operator {
+    color: white;
+}
+
+#docgo .comment {
+}
+
+#docgo h1, h2, h3, h4, h5 {
+    text-align: left;
+    margin-top: 0px;
+    margin-right: 0px;
+    margin-bottom: 15px;
+    margin-left: 0px;
+}
+
+#docgo h1 {
+    margin-top: 40px;
+}
+
+#docgo .doc {
+    vertical-align: top;
+    font-family: 'Palatino Linotype', 'Book Antiqua', Palatino, FreeSerif, serif;
+    font-size: 15px;
+    line-height: 22px;
+    color: black;
+    min-width: 450px;
+    max-width: 450px;
+    padding-top: 10px;
+    padding-right: 25px;
+    padding-bottom: 1px;
+    padding-left: 50px;
+    overflow-x: hidden;
+}
+
+#docgo .code {
+    min-width: 650px;
+    max-width: 650px;
+    padding-left: 25px;
+    padding-right: 15px;
+    border-left: 1px;
+    overflow-x: hidden;
+    vertical-align: top;
+}
+
+#docgo .code pre code  {
+    font-size: 12px;
+    line-height: 18px;
+    font-family: Menlo, Monaco, Consolas, "Lucida Console", monospace;
+    color: rgb(120, 120, 120);
+}
+</style>
+</head>
+<body>
+<div id="docgo">
+  <div id="background"></div>
+  <table>
+    <thead><tr><th class="doc"><h1>apiUtility.go</h1></th><th class="code"></th></tr></thead>
+    <tbody>
+      
+      <tr class="section">
+	<td class="doc"></td>
+	<td class="code"><pre><code><div class="keyword">package</div> <div class="ident">api</div><div class="operator"></div>
+
+<div class="keyword">import</div> <div class="operator">(</div>
+
+    <div class="literal">&#34;os&#34;</div><div class="operator"></div>
+	<div class="literal">&#34;io/ioutil&#34;</div><div class="operator"></div>
+	<div class="literal">&#34;net/http&#34;</div><div class="operator"></div>
+    <div class="literal">&#34;encoding/json&#34;</div><div class="operator"></div>
+    <div class="ident">con</div> <div class="literal">&#34;strconv&#34;</div><div class="operator"></div>
+    <div class="literal">&#34;sync&#34;</div><div class="operator"></div>
+    <div class="literal">&#34;time&#34;</div><div class="operator"></div>
+    <div class="literal">&#34;log&#34;</div><div class="operator"></div>
+	<div class="literal">&#34;errors&#34;</div><div class="operator"></div>
+	<div class="literal">&#34;strings&#34;</div><div class="operator"></div>
+	<div class="literal">&#34;net&#34;</div><div class="operator"></div>
+	<div class="literal">&#34;net/url&#34;</div><div class="operator"></div>
+
+<div class="operator">)</div><div class="operator"></div>
+
+</code></pre></td>
+      </tr>
+      
+      <tr class="section">
+	<td class="doc"><p>Time Formats for Interface Änderungen an Haltestellen und Linienpakete ermitteln</p>
+</td>
+	<td class="code"><pre><code><div class="keyword">const</div> <div class="ident">TIMEFORMATDATE</div> <div class="ident">string</div><div class="operator">=</div><div class="literal">&#34;2006-01-02&#34;</div><div class="operator"></div>
+<div class="keyword">const</div> <div class="ident">TIMEFORMATTIME</div> <div class="ident">string</div><div class="operator">=</div><div class="literal">&#34;15:04&#34;</div><div class="operator"></div>
+<div class="keyword">const</div> <div class="ident">TIMEFORMAT</div> <div class="ident">string</div><div class="operator">=</div><div class="literal">&#34;2006-01-02&#43;15:04&#34;</div><div class="operator"></div>
+
+</code></pre></td>
+      </tr>
+      
+      <tr class="section">
+	<td class="doc"><p>TODO refactor this!</p>
+</td>
+	<td class="code"><pre><code><div class="keyword">const</div> <div class="ident">TRUE</div> <div class="ident">string</div><div class="operator">=</div><div class="literal">&#34;true&#34;</div><div class="operator"></div>
+<div class="keyword">const</div> <div class="ident">FALSE</div> <div class="ident">string</div><div class="operator">=</div><div class="literal">&#34;false&#34;</div><div class="operator"></div>
+<div class="keyword">var</div> <div class="ident">booleanA</div> <div class="operator">=</div><div class="operator">[</div><div class="literal">2</div><div class="operator">]</div><div class="ident">string</div><div class="operator">{</div><div class="literal">&#34;true&#34;</div><div class="operator">,</div><div class="literal">&#34;false&#34;</div><div class="operator">}</div><div class="operator"></div>
+
+</code></pre></td>
+      </tr>
+      
+      <tr class="section">
+	<td class="doc"><p>used for async calls. See Station Monitor</p>
+</td>
+	<td class="code"><pre><code><div class="keyword">type</div> <div class="ident">HttpResponse</div> <div class="keyword">struct</div> <div class="operator">{</div>
+  <div class="ident">Url</div>      <div class="ident">string</div><div class="operator"></div>
+  <div class="ident">Response</div> <div class="operator">*</div><div class="ident">http</div><div class="operator">.</div><div class="ident">Response</div><div class="operator"></div>
+  <div class="ident">Err</div>      <div class="ident">error</div><div class="operator"></div>
+<div class="operator">}</div><div class="operator"></div>
+
+</code></pre></td>
+      </tr>
+      
+      <tr class="section">
+	<td class="doc"></td>
+	<td class="code"><pre><code>
+</code></pre></td>
+      </tr>
+      
+      <tr class="section">
+	<td class="doc"><p>The API Token is stored in tokenConf.json. The struct Token is a singleton.</p>
+</td>
+	<td class="code"><pre><code><div class="keyword">type</div> <div class="ident">token</div> <div class="keyword">struct</div><div class="operator">{</div>
+    <div class="ident">UserToken</div> <div class="ident">string</div> <div class="literal">`json:&#34;token&#34;`</div><div class="operator"></div>
+<div class="operator">}</div><div class="operator"></div>
+<div class="keyword">var</div> <div class="ident">apiToken</div> <div class="operator">*</div><div class="ident">token</div><div class="operator"></div>
+<div class="keyword">var</div> <div class="ident">once</div> <div class="ident">sync</div><div class="operator">.</div><div class="ident">Once</div><div class="operator"></div>
+
+<div class="keyword">func</div> <div class="ident">parseKindOfTourToTourType</div><div class="operator">(</div><div class="ident">kindOfTour</div> <div class="ident">string</div><div class="operator">)</div><div class="ident">string</div><div class="operator">{</div>
+	<div class="ident">temp</div><div class="operator">:=</div><div class="ident">strings</div><div class="operator">.</div><div class="ident">Replace</div><div class="operator">(</div><div class="ident">kindOfTour</div><div class="operator">,</div><div class="literal">&#34;REF&#34;</div><div class="operator">,</div><div class="literal">&#34;&#34;</div><div class="operator">,</div><div class="operator">-</div><div class="literal">1</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">temp</div><div class="operator">=</div><div class="ident">strings</div><div class="operator">.</div><div class="ident">Replace</div><div class="operator">(</div><div class="ident">temp</div><div class="operator">,</div><div class="literal">&#34;AUS&#34;</div><div class="operator">,</div><div class="literal">&#34;&#34;</div><div class="operator">,</div><div class="operator">-</div><div class="literal">1</div><div class="operator">)</div><div class="operator"></div>
+	<div class="keyword">return</div> <div class="ident">temp</div><div class="operator"></div>
+<div class="operator">}</div><div class="operator"></div>
+
+</code></pre></td>
+      </tr>
+      
+      <tr class="section">
+	<td class="doc"><p>try to parse the content to error description, if it works, take that message as error
+otherwise return the given error, which should be the json Parsing error.</p>
+</td>
+	<td class="code"><pre><code>
+<div class="keyword">func</div> <div class="ident">handleErrorsFromServer</div><div class="operator">(</div><div class="ident">content</div> <div class="operator">[</div><div class="operator">]</div><div class="ident">byte</div><div class="operator">,</div><div class="ident">p_err</div> <div class="ident">error</div><div class="operator">)</div><div class="ident">error</div><div class="operator">{</div>
+	<div class="ident">errd</div><div class="operator">:=</div><div class="ident">string</div><div class="operator">(</div><div class="ident">content</div><div class="operator">)</div><div class="operator"></div>
+	<div class="keyword">if</div> <div class="ident">strings</div><div class="operator">.</div><div class="ident">Contains</div><div class="operator">(</div><div class="ident">errd</div><div class="operator">,</div><div class="literal">&#34;errordescription&#34;</div><div class="operator">)</div> <div class="operator">{</div>
+</code></pre></td>
+      </tr>
+      
+      <tr class="section">
+	<td class="doc"><p>Create Error Message from given ErrorDescription</p>
+</td>
+	<td class="code"><pre><code>		<div class="ident">p_err</div> <div class="operator">=</div> <div class="ident">errors</div><div class="operator">.</div><div class="ident">New</div><div class="operator">(</div><div class="ident">string</div><div class="operator">(</div><div class="ident">errd</div><div class="operator">)</div><div class="operator">)</div><div class="operator"></div>
+	<div class="operator">}</div><div class="operator"></div>
+	<div class="keyword">return</div> <div class="ident">p_err</div><div class="operator">;</div>
+<div class="operator">}</div><div class="operator"></div>
+
+<div class="keyword">func</div> <div class="ident">parseResponseObject</div><div class="operator">(</div><div class="ident">content</div> <div class="operator">[</div><div class="operator">]</div><div class="ident">byte</div><div class="operator">,</div><div class="ident">v</div> <div class="keyword">interface</div><div class="operator">{</div><div class="operator">}</div><div class="operator">)</div><div class="ident">error</div> <div class="operator">{</div>
+	<div class="ident">err</div> <div class="operator">:=</div> <div class="ident">json</div><div class="operator">.</div><div class="ident">Unmarshal</div><div class="operator">(</div><div class="ident">content</div><div class="operator">,</div> <div class="ident">v</div><div class="operator">)</div><div class="operator"></div>
+	<div class="keyword">if</div> <div class="ident">err</div> <div class="operator">!=</div> <div class="ident">nil</div> <div class="operator">{</div>
+		<div class="ident">err</div><div class="operator">=</div><div class="ident">handleErrorsFromServer</div><div class="operator">(</div><div class="ident">content</div><div class="operator">,</div><div class="ident">err</div><div class="operator">)</div><div class="operator"></div>
+	<div class="operator">}</div><div class="operator"></div>
+	<div class="keyword">return</div> <div class="ident">err</div><div class="operator"></div>
+<div class="operator">}</div><div class="operator"></div>
+
+<div class="keyword">func</div> <div class="ident">makeRequest</div><div class="operator">(</div><div class="ident">url</div> <div class="ident">string</div><div class="operator">,</div><div class="ident">responseObject</div> <div class="keyword">interface</div><div class="operator">{</div><div class="operator">}</div><div class="operator">)</div><div class="ident">error</div><div class="operator">{</div>
+	<div class="ident">log</div><div class="operator">.</div><div class="ident">Println</div><div class="operator">(</div><div class="ident">url</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">content</div><div class="operator">,</div><div class="ident">err</div><div class="operator">:=</div><div class="ident">getContent</div><div class="operator">(</div><div class="ident">url</div><div class="operator">)</div><div class="operator"></div>
+	<div class="keyword">if</div> <div class="ident">err</div> <div class="operator">!=</div> <div class="ident">nil</div> <div class="operator">{</div>
+		<div class="keyword">return</div> <div class="ident">err</div><div class="operator"></div>
+	<div class="operator">}</div><div class="operator"></div>
+	<div class="keyword">return</div> <div class="ident">parseResponseObject</div><div class="operator">(</div><div class="ident">content</div><div class="operator">,</div><div class="ident">responseObject</div><div class="operator">)</div><div class="operator"></div>
+<div class="operator">}</div><div class="operator"></div>
+
+<div class="keyword">func</div> <div class="ident">IsInCurrentlyInTimeRange</div><div class="operator">(</div><div class="ident">from</div> <div class="ident">uint64</div><div class="operator">,</div> <div class="ident">to</div> <div class="ident">uint64</div><div class="operator">)</div><div class="ident">bool</div><div class="operator">{</div>
+	<div class="ident">fromT</div><div class="operator">:=</div><div class="ident">time</div><div class="operator">.</div><div class="ident">Unix</div><div class="operator">(</div><div class="ident">int64</div><div class="operator">(</div><div class="ident">from</div><div class="operator">)</div><div class="operator">,</div> <div class="literal">0</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">toT</div><div class="operator">:=</div><div class="ident">time</div><div class="operator">.</div><div class="ident">Unix</div><div class="operator">(</div><div class="ident">int64</div><div class="operator">(</div><div class="ident">to</div><div class="operator">)</div><div class="operator">,</div> <div class="literal">0</div><div class="operator">)</div><div class="operator"></div>
+	<div class="keyword">return</div> <div class="ident">time</div><div class="operator">.</div><div class="ident">Now</div><div class="operator">(</div><div class="operator">)</div><div class="operator">.</div><div class="ident">After</div><div class="operator">(</div><div class="ident">fromT</div><div class="operator">)</div> <div class="operator">&amp;&amp;</div> <div class="ident">time</div><div class="operator">.</div><div class="ident">Now</div><div class="operator">(</div><div class="operator">)</div><div class="operator">.</div><div class="ident">Before</div><div class="operator">(</div><div class="ident">toT</div><div class="operator">)</div><div class="operator"></div>
+<div class="operator">}</div><div class="operator"></div>
+
+<div class="keyword">func</div> <div class="ident">IsTimeRangeInTheFuture</div><div class="operator">(</div><div class="ident">from</div> <div class="ident">uint64</div><div class="operator">)</div><div class="ident">bool</div><div class="operator">{</div>
+	<div class="ident">fromT</div><div class="operator">:=</div><div class="ident">time</div><div class="operator">.</div><div class="ident">Unix</div><div class="operator">(</div><div class="ident">int64</div><div class="operator">(</div><div class="ident">from</div><div class="operator">)</div><div class="operator">,</div> <div class="literal">0</div><div class="operator">)</div><div class="operator"></div>
+	<div class="keyword">return</div> <div class="ident">time</div><div class="operator">.</div><div class="ident">Now</div><div class="operator">(</div><div class="operator">)</div><div class="operator">.</div><div class="ident">Before</div><div class="operator">(</div><div class="ident">fromT</div><div class="operator">)</div><div class="operator"></div>
+<div class="operator">}</div><div class="operator"></div>
+<div class="keyword">func</div> <div class="ident">GetLinesSeparated</div><div class="operator">(</div><div class="ident">lines</div> <div class="operator">[</div><div class="operator">]</div><div class="ident">string</div><div class="operator">)</div><div class="operator">(</div><div class="ident">string</div><div class="operator">)</div><div class="operator">{</div>
+    <div class="keyword">var</div> <div class="ident">values</div> <div class="ident">string</div><div class="operator">=</div><div class="literal">&#34;&#34;</div><div class="operator"></div>
+    <div class="keyword">for</div> <div class="ident">_</div><div class="operator">,</div><div class="ident">l</div> <div class="operator">:=</div> <div class="keyword">range</div> <div class="ident">lines</div><div class="operator">{</div>
+        <div class="ident">values</div><div class="operator">=</div><div class="ident">values</div><div class="operator">&#43;</div><div class="ident">l</div><div class="operator">&#43;</div><div class="literal">&#34;;&#34;</div><div class="operator"></div>
+    <div class="operator">}</div><div class="operator"></div>
+    <div class="ident">valuesTrimmed</div>  <div class="operator">:=</div> <div class="ident">values</div><div class="operator">[</div><div class="operator">:</div><div class="ident">len</div><div class="operator">(</div><div class="ident">values</div><div class="operator">)</div><div class="operator">-</div><div class="literal">1</div><div class="operator">]</div><div class="operator"></div>
+    <div class="keyword">return</div> <div class="ident">valuesTrimmed</div><div class="operator"></div>
+<div class="operator">}</div><div class="operator"></div>
+
+<div class="keyword">func</div> <div class="ident">SplitLinesSeperated</div><div class="operator">(</div><div class="ident">lines</div> <div class="ident">string</div><div class="operator">)</div><div class="operator">[</div><div class="operator">]</div><div class="ident">string</div><div class="operator">{</div>
+	<div class="keyword">return</div> <div class="ident">strings</div><div class="operator">.</div><div class="ident">Split</div><div class="operator">(</div><div class="ident">lines</div><div class="operator">,</div><div class="literal">&#34;;&#34;</div><div class="operator">)</div><div class="operator"></div>
+<div class="operator">}</div><div class="operator"></div>
+
+<div class="keyword">func</div> <div class="ident">SplitLinesSeperatedComma</div><div class="operator">(</div><div class="ident">lines</div> <div class="ident">string</div><div class="operator">)</div><div class="operator">[</div><div class="operator">]</div><div class="ident">string</div><div class="operator">{</div>
+	<div class="keyword">return</div> <div class="ident">strings</div><div class="operator">.</div><div class="ident">Split</div><div class="operator">(</div><div class="ident">lines</div><div class="operator">,</div><div class="literal">&#34;,&#34;</div><div class="operator">)</div><div class="operator"></div>
+<div class="operator">}</div><div class="operator"></div>
+
+<div class="keyword">func</div> <div class="ident">ListContainsValue</div><div class="operator">(</div><div class="ident">list</div> <div class="operator">[</div><div class="operator">]</div><div class="ident">string</div><div class="operator">,</div> <div class="ident">value</div> <div class="ident">string</div><div class="operator">)</div><div class="ident">bool</div><div class="operator">{</div>
+	<div class="keyword">for</div> <div class="ident">_</div><div class="operator">,</div><div class="ident">v</div> <div class="operator">:=</div> <div class="keyword">range</div> <div class="ident">list</div> <div class="operator">{</div>
+		<div class="keyword">if</div> <div class="ident">v</div> <div class="operator">==</div> <div class="ident">value</div> <div class="operator">{</div>
+			<div class="keyword">return</div> <div class="ident">true</div><div class="operator"></div>
+		<div class="operator">}</div><div class="operator"></div>
+	<div class="operator">}</div><div class="operator"></div>
+	<div class="keyword">return</div> <div class="ident">false</div><div class="operator"></div>
+<div class="operator">}</div><div class="operator"></div>
+
+</code></pre></td>
+      </tr>
+      
+      <tr class="section">
+	<td class="doc"><p>Utility Functions for Time Parameters</p>
+</td>
+	<td class="code"><pre><code>
+<div class="keyword">func</div> <div class="ident">GetTimeFormat</div><div class="operator">(</div><div class="ident">t</div> <div class="ident">time</div><div class="operator">.</div><div class="ident">Time</div><div class="operator">)</div><div class="operator">(</div><div class="operator">*</div><div class="ident">string</div><div class="operator">)</div><div class="operator">{</div>
+    <div class="ident">result</div><div class="operator">:=</div><div class="ident">t</div><div class="operator">.</div><div class="ident">Format</div><div class="operator">(</div><div class="ident">TIMEFORMAT</div><div class="operator">)</div><div class="operator"></div>
+    <div class="keyword">return</div> <div class="operator">&amp;</div><div class="ident">result</div><div class="operator"></div>
+<div class="operator">}</div><div class="operator"></div>
+<div class="keyword">func</div> <div class="ident">GetTimeFormatNow</div><div class="operator">(</div><div class="operator">)</div><div class="operator">(</div><div class="operator">*</div><div class="ident">string</div><div class="operator">)</div><div class="operator">{</div>
+    <div class="keyword">return</div> <div class="ident">GetTimeFormat</div><div class="operator">(</div><div class="ident">time</div><div class="operator">.</div><div class="ident">Now</div><div class="operator">(</div><div class="operator">)</div><div class="operator">)</div><div class="operator"></div>
+<div class="operator">}</div><div class="operator"></div>
+<div class="keyword">func</div> <div class="ident">GetTimeUnixNow</div><div class="operator">(</div><div class="operator">)</div><div class="operator">(</div><div class="operator">*</div><div class="ident">string</div><div class="operator">)</div><div class="operator">{</div>
+    <div class="keyword">return</div> <div class="ident">GetTimeUnix</div><div class="operator">(</div><div class="ident">time</div><div class="operator">.</div><div class="ident">Now</div><div class="operator">(</div><div class="operator">)</div><div class="operator">)</div><div class="operator"></div>
+<div class="operator">}</div><div class="operator"></div>
+<div class="keyword">func</div> <div class="ident">GetTimeUnix</div><div class="operator">(</div><div class="ident">t</div> <div class="ident">time</div><div class="operator">.</div><div class="ident">Time</div><div class="operator">)</div><div class="operator">(</div><div class="operator">*</div><div class="ident">string</div><div class="operator">)</div><div class="operator">{</div>
+    <div class="ident">unixTime</div><div class="operator">:=</div><div class="ident">t</div><div class="operator">.</div><div class="ident">Unix</div><div class="operator">(</div><div class="operator">)</div><div class="operator"></div>
+    <div class="ident">result</div><div class="operator">:=</div><div class="ident">con</div><div class="operator">.</div><div class="ident">FormatInt</div><div class="operator">(</div><div class="ident">unixTime</div><div class="operator">,</div> <div class="literal">10</div><div class="operator">)</div><div class="operator"></div>
+    <div class="keyword">return</div> <div class="operator">&amp;</div><div class="ident">result</div><div class="operator"></div>
+<div class="operator">}</div><div class="operator"></div>
+<div class="keyword">func</div> <div class="ident">arrayToString</div><div class="operator">(</div><div class="ident">arr</div><div class="operator">[</div><div class="operator">]</div><div class="ident">string</div><div class="operator">)</div><div class="ident">string</div><div class="operator">{</div>
+	<div class="comment">/*result:=&#34;[&#34;
+	for _,v:=range arr{
+		result=result&#43;v&#43;&#34; &#34;
+	}
+	result=result[:len(result)-1]
+	result=result&#43;&#34;]&#34;
+	return result	*/</div>
+	<div class="keyword">return</div> <div class="literal">&#34;[&#34;</div><div class="operator">&#43;</div><div class="ident">strings</div><div class="operator">.</div><div class="ident">Join</div><div class="operator">(</div><div class="ident">arr</div><div class="operator">,</div><div class="literal">&#34; &#34;</div><div class="operator">)</div><div class="operator">&#43;</div><div class="literal">&#34;]&#34;</div><div class="operator"></div>
+<div class="operator">}</div><div class="operator"></div>
+</code></pre></td>
+      </tr>
+      
+      <tr class="section">
+	<td class="doc"><p>Functions for api token</p>
+</td>
+	<td class="code"><pre><code>
+<div class="keyword">func</div> <div class="ident">GetToken</div><div class="operator">(</div><div class="operator">)</div> <div class="operator">(</div><div class="operator">*</div><div class="ident">string</div><div class="operator">,</div><div class="ident">error</div><div class="operator">)</div> <div class="operator">{</div>
+</code></pre></td>
+      </tr>
+      
+      <tr class="section">
+	<td class="doc"><p>zuerst nach environment var suchen</p>
+</td>
+	<td class="code"><pre><code>		<div class="ident">envToken</div><div class="operator">:=</div><div class="ident">os</div><div class="operator">.</div><div class="ident">Getenv</div><div class="operator">(</div><div class="literal">&#34;rnv_api_token&#34;</div><div class="operator">)</div><div class="operator"></div>
+		<div class="keyword">if</div> <div class="operator">(</div><div class="ident">envToken</div><div class="operator">!=</div><div class="literal">&#34;&#34;</div><div class="operator">)</div><div class="operator">{</div>
+			<div class="keyword">return</div> <div class="operator">&amp;</div><div class="ident">envToken</div><div class="operator">,</div><div class="ident">nil</div><div class="operator"></div>
+		<div class="operator">}</div><div class="operator"></div>
+		<div class="keyword">var</div> <div class="ident">err</div> <div class="ident">error</div><div class="operator"></div>
+    <div class="ident">once</div><div class="operator">.</div><div class="ident">Do</div><div class="operator">(</div><div class="keyword">func</div><div class="operator">(</div><div class="operator">)</div> <div class="operator">{</div>
+        <div class="ident">apiToken</div><div class="operator">,</div><div class="ident">err</div> <div class="operator">=</div> <div class="ident">readToken</div><div class="operator">(</div><div class="operator">)</div><div class="operator"></div>
+    <div class="operator">}</div><div class="operator">)</div><div class="operator"></div>
+    <div class="keyword">return</div> <div class="operator">&amp;</div><div class="ident">apiToken</div><div class="operator">.</div><div class="ident">UserToken</div><div class="operator">,</div><div class="ident">err</div><div class="operator"></div>
+<div class="operator">}</div><div class="operator"></div>
+<div class="keyword">func</div> <div class="ident">readToken</div><div class="operator">(</div><div class="operator">)</div> <div class="operator">(</div><div class="operator">*</div><div class="ident">token</div><div class="operator">,</div><div class="ident">error</div><div class="operator">)</div><div class="operator">{</div>
+	<div class="ident">t</div> <div class="operator">:=</div> <div class="ident">token</div><div class="operator">{</div><div class="operator">}</div><div class="operator"></div>
+    <div class="ident">file</div><div class="operator">,</div> <div class="ident">errFile</div> <div class="operator">:=</div> <div class="ident">os</div><div class="operator">.</div><div class="ident">Open</div><div class="operator">(</div><div class="literal">&#34;tokenConf.json&#34;</div><div class="operator">)</div><div class="operator"></div>
+	<div class="keyword">if</div>  <div class="ident">errFile</div><div class="operator">!=</div><div class="ident">nil</div><div class="operator">{</div>
+		<div class="ident">log</div><div class="operator">.</div><div class="ident">Println</div><div class="operator">(</div><div class="ident">errFile</div><div class="operator">)</div><div class="operator"></div>
+        <div class="ident">errFile</div><div class="operator">=</div><div class="ident">errors</div><div class="operator">.</div><div class="ident">New</div><div class="operator">(</div><div class="literal">&#34;Cannot read Token. Please Check your File tokenConf.json or set environment variable rnv_api_token&#34;</div><div class="operator">)</div><div class="operator"></div>
+		<div class="keyword">return</div> <div class="operator">&amp;</div><div class="ident">t</div><div class="operator">,</div><div class="ident">errFile</div><div class="operator"></div>
+    <div class="operator">}</div><div class="operator"></div>
+    <div class="ident">decoder</div> <div class="operator">:=</div> <div class="ident">json</div><div class="operator">.</div><div class="ident">NewDecoder</div><div class="operator">(</div><div class="ident">file</div><div class="operator">)</div><div class="operator"></div>
+    <div class="ident">err</div> <div class="operator">:=</div> <div class="ident">decoder</div><div class="operator">.</div><div class="ident">Decode</div><div class="operator">(</div><div class="operator">&amp;</div><div class="ident">t</div><div class="operator">)</div><div class="operator"></div>
+	<div class="keyword">if</div> <div class="ident">err</div><div class="operator">!=</div><div class="ident">nil</div> <div class="operator">{</div>
+		<div class="ident">log</div><div class="operator">.</div><div class="ident">Println</div><div class="operator">(</div><div class="ident">err</div><div class="operator">)</div><div class="operator"></div>
+        <div class="ident">err</div><div class="operator">=</div><div class="ident">errors</div><div class="operator">.</div><div class="ident">New</div><div class="operator">(</div><div class="literal">&#34;Cannot read Token. Please Check your content of tokenConf.json or set environment variable rnv_api_token&#34;</div><div class="operator">)</div><div class="operator"></div>
+    <div class="operator">}</div><div class="operator"></div>
+
+    <div class="keyword">return</div> <div class="operator">&amp;</div><div class="ident">t</div><div class="operator">,</div><div class="ident">err</div><div class="operator"></div>
+<div class="operator">}</div><div class="operator"></div>
+
+<div class="keyword">func</div> <div class="ident">GetRnvApiHttpRequest</div><div class="operator">(</div><div class="ident">url</div> <div class="ident">string</div><div class="operator">)</div><div class="operator">(</div><div class="operator">*</div><div class="ident">http</div><div class="operator">.</div><div class="ident">Request</div><div class="operator">,</div><div class="ident">error</div><div class="operator">)</div><div class="operator">{</div>
+	<div class="ident">reqe</div><div class="operator">,</div> <div class="ident">err</div> <div class="operator">:=</div> <div class="ident">http</div><div class="operator">.</div><div class="ident">NewRequest</div><div class="operator">(</div><div class="literal">&#34;GET&#34;</div><div class="operator">,</div> <div class="ident">url</div><div class="operator">,</div> <div class="ident">nil</div><div class="operator">)</div><div class="operator"></div>
+	<div class="keyword">if</div> <div class="ident">err</div><div class="operator">!=</div><div class="ident">nil</div> <div class="operator">{</div>
+		<div class="keyword">return</div> <div class="ident">nil</div><div class="operator">,</div><div class="ident">err</div><div class="operator"></div>
+	<div class="operator">}</div><div class="operator"></div>
+	<div class="ident">tok</div><div class="operator">,</div><div class="ident">errT</div><div class="operator">:=</div> <div class="ident">GetToken</div><div class="operator">(</div><div class="operator">)</div><div class="operator"></div>
+	<div class="keyword">if</div> <div class="ident">errT</div><div class="operator">!=</div><div class="ident">nil</div> <div class="operator">{</div>
+		<div class="keyword">return</div> <div class="ident">nil</div><div class="operator">,</div><div class="ident">errT</div><div class="operator"></div>
+	<div class="operator">}</div><div class="operator"></div>
+	<div class="ident">reqe</div><div class="operator">.</div><div class="ident">Header</div><div class="operator">.</div><div class="ident">Add</div><div class="operator">(</div><div class="literal">&#34;Accept&#34;</div><div class="operator">,</div> <div class="literal">&#34;application/json&#34;</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">reqe</div><div class="operator">.</div><div class="ident">Header</div><div class="operator">.</div><div class="ident">Add</div><div class="operator">(</div><div class="literal">&#34;RNV_API_TOKEN&#34;</div><div class="operator">,</div><div class="operator">*</div><div class="ident">tok</div><div class="operator">)</div><div class="operator"></div>
+
+	<div class="keyword">return</div> <div class="ident">reqe</div><div class="operator">,</div><div class="ident">nil</div><div class="operator"></div>
+<div class="operator">}</div><div class="operator"></div>
+
+</code></pre></td>
+      </tr>
+      
+      <tr class="section">
+	<td class="doc"><p>This Function is called for all API calls.
+It always requests json objekts. The Token is added to the Request Header.</p>
+</td>
+	<td class="code"><pre><code>
+<div class="keyword">func</div> <div class="ident">getContent</div><div class="operator">(</div><div class="ident">targetUrl</div> <div class="ident">string</div><div class="operator">)</div> <div class="operator">(</div><div class="operator">[</div><div class="operator">]</div><div class="ident">byte</div><div class="operator">,</div><div class="ident">error</div><div class="operator">)</div> <div class="operator">{</div>
+	<div class="ident">req</div><div class="operator">,</div> <div class="ident">err</div> <div class="operator">:=</div> <div class="ident">GetRnvApiHttpRequest</div><div class="operator">(</div><div class="ident">targetUrl</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">log</div><div class="operator">.</div><div class="ident">Println</div><div class="operator">(</div><div class="ident">targetUrl</div><div class="operator">)</div><div class="operator"></div>
+	<div class="keyword">if</div> <div class="ident">err</div> <div class="operator">!=</div> <div class="ident">nil</div> <div class="operator">{</div>
+		<div class="ident">log</div><div class="operator">.</div><div class="ident">Println</div><div class="operator">(</div><div class="ident">err</div><div class="operator">)</div><div class="operator"></div>
+		<div class="keyword">return</div> <div class="ident">nil</div><div class="operator">,</div> <div class="ident">err</div><div class="operator"></div>
+	<div class="operator">}</div><div class="operator"></div>
+	<div class="ident">u</div><div class="operator">,</div><div class="ident">errU</div><div class="operator">:=</div><div class="ident">url</div><div class="operator">.</div><div class="ident">Parse</div><div class="operator">(</div><div class="ident">os</div><div class="operator">.</div><div class="ident">Getenv</div><div class="operator">(</div><div class="literal">&#34;http_proxy&#34;</div><div class="operator">)</div><div class="operator">)</div><div class="operator"></div>
+	<div class="keyword">if</div> <div class="ident">errU</div> <div class="operator">!=</div> <div class="ident">nil</div> <div class="operator">{</div>
+		<div class="ident">log</div><div class="operator">.</div><div class="ident">Println</div><div class="operator">(</div><div class="ident">errU</div><div class="operator">)</div><div class="operator"></div>
+		<div class="keyword">return</div> <div class="ident">nil</div><div class="operator">,</div> <div class="ident">errU</div><div class="operator"></div>
+	<div class="operator">}</div><div class="operator"></div>
+	<div class="ident">tr</div> <div class="operator">:=</div> <div class="operator">&amp;</div><div class="ident">http</div><div class="operator">.</div><div class="ident">Transport</div><div class="operator">{</div>
+		<div class="ident">Dial</div><div class="operator">:</div> <div class="operator">(</div><div class="operator">&amp;</div><div class="ident">net</div><div class="operator">.</div><div class="ident">Dialer</div><div class="operator">{</div>
+    <div class="ident">Timeout</div><div class="operator">:</div> <div class="literal">5</div> <div class="operator">*</div> <div class="ident">time</div><div class="operator">.</div><div class="ident">Second</div><div class="operator">,</div>
+  	<div class="operator">}</div><div class="operator">)</div><div class="operator">.</div><div class="ident">Dial</div><div class="operator">,</div>
+		<div class="ident">TLSHandshakeTimeout</div><div class="operator">:</div> <div class="literal">5</div> <div class="operator">*</div> <div class="ident">time</div><div class="operator">.</div><div class="ident">Second</div><div class="operator">,</div>
+	  <div class="ident">Proxy</div><div class="operator">:</div> <div class="ident">http</div><div class="operator">.</div><div class="ident">ProxyURL</div><div class="operator">(</div><div class="ident">u</div><div class="operator">)</div><div class="operator">,</div>
+	<div class="operator">}</div><div class="operator"></div>
+	<div class="ident">client</div> <div class="operator">:=</div> <div class="operator">&amp;</div><div class="ident">http</div><div class="operator">.</div><div class="ident">Client</div><div class="operator">{</div>
+		<div class="ident">Timeout</div><div class="operator">:</div> <div class="ident">time</div><div class="operator">.</div><div class="ident">Second</div> <div class="operator">*</div> <div class="literal">10</div><div class="operator">,</div>
+		<div class="ident">Transport</div><div class="operator">:</div> <div class="ident">tr</div><div class="operator">,</div>
+	<div class="operator">}</div><div class="operator"></div>
+	<div class="ident">resp</div><div class="operator">,</div> <div class="ident">err</div> <div class="operator">:=</div> <div class="ident">client</div><div class="operator">.</div><div class="ident">Do</div><div class="operator">(</div><div class="ident">req</div><div class="operator">)</div><div class="operator"></div>
+	<div class="keyword">if</div> <div class="ident">err</div> <div class="operator">!=</div> <div class="ident">nil</div> <div class="operator">{</div>
+		<div class="ident">log</div><div class="operator">.</div><div class="ident">Println</div><div class="operator">(</div><div class="ident">err</div><div class="operator">)</div><div class="operator"></div>
+		<div class="keyword">return</div> <div class="ident">nil</div><div class="operator">,</div> <div class="ident">err</div><div class="operator"></div>
+	<div class="operator">}</div><div class="operator"></div>
+
+    <div class="ident">log</div><div class="operator">.</div><div class="ident">Println</div><div class="operator">(</div><div class="literal">&#34;RES: &#34;</div><div class="operator">&#43;</div><div class="ident">resp</div><div class="operator">.</div><div class="ident">Status</div><div class="operator">&#43;</div><div class="literal">&#34; &#34;</div><div class="operator">&#43;</div><div class="ident">resp</div><div class="operator">.</div><div class="ident">Proto</div><div class="operator">)</div><div class="operator"></div>
+	<div class="keyword">defer</div> <div class="ident">resp</div><div class="operator">.</div><div class="ident">Body</div><div class="operator">.</div><div class="ident">Close</div><div class="operator">(</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">body</div><div class="operator">,</div> <div class="ident">err</div> <div class="operator">:=</div> <div class="ident">ioutil</div><div class="operator">.</div><div class="ident">ReadAll</div><div class="operator">(</div><div class="ident">resp</div><div class="operator">.</div><div class="ident">Body</div><div class="operator">)</div><div class="operator"></div>
+	<div class="keyword">if</div> <div class="ident">err</div> <div class="operator">!=</div> <div class="ident">nil</div> <div class="operator">{</div>
+		<div class="ident">log</div><div class="operator">.</div><div class="ident">Println</div><div class="operator">(</div><div class="ident">err</div><div class="operator">)</div><div class="operator"></div>
+		<div class="keyword">return</div> <div class="ident">nil</div><div class="operator">,</div> <div class="ident">err</div><div class="operator"></div>
+	<div class="operator">}</div><div class="operator"></div>
+	<div class="keyword">return</div> <div class="ident">body</div><div class="operator">,</div> <div class="ident">nil</div><div class="operator"></div>
+<div class="operator">}</div><div class="operator"></div>
+
+</code></pre></td>
+      </tr>
+      
+    </tbody>
+  </table>
+</div>
+</body>
+</html>

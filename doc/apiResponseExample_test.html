@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>apiResponseExample_test.go</title>
+<meta charset="utf-8"/>
+<style type="text/css">body {
+    background: rgb(225, 225, 225);
+    margin: 0px;
+    padding: 0px;
+}
+
+#docgo p {
+    margin-top: 0px;
+    margin-right: 0px;
+    margin-bottom: 15px;
+    margin-left: 0px;
+}
+
+#docgo div {
+    display: inline;
+}
+
+#docgo #background {
+    position: fixed;
+    top: 0; left: 525px; right: 0; bottom: 0;
+    background: rgb(47, 47, 47);
+    border-left: 1px solid #e5e5ee;
+    z-index: -1;
+}
+
+#docgo .keyword {
+    color: rgb(250, 200, 100);
+}
+
+#docgo .literal {
+    color: rgb(140, 190, 100);
+}
+
+#docgo .ident {
+    color: white;
+}
+
+#docgo .operator {
+    color: white;
+}
+
+#docgo .comment {
+}
+
+#docgo h1, h2, h3, h4, h5 {
+    text-align: left;
+    margin-top: 0px;
+    margin-right: 0px;
+    margin-bottom: 15px;
+    margin-left: 0px;
+}
+
+#docgo h1 {
+    margin-top: 40px;
+}
+
+#docgo .doc {
+    vertical-align: top;
+    font-family: 'Palatino Linotype', 'Book Antiqua', Palatino, FreeSerif, serif;
+    font-size: 15px;
+    line-height: 22px;
+    color: black;
+    min-width: 450px;
+    max-width: 450px;
+    padding-top: 10px;
+    padding-right: 25px;
+    padding-bottom: 1px;
+    padding-left: 50px;
+    overflow-x: hidden;
+}
+
+#docgo .code {
+    min-width: 650px;
+    max-width: 650px;
+    padding-left: 25px;
+    padding-right: 15px;
+    border-left: 1px;
+    overflow-x: hidden;
+    vertical-align: top;
+}
+
+#docgo .code pre code  {
+    font-size: 12px;
+    line-height: 18px;
+    font-family: Menlo, Monaco, Consolas, "Lucida Console", monospace;
+    color: rgb(120, 120, 120);
+}
+</style>
+</head>
+<body>
+<div id="docgo">
+  <div id="background"></div>
+  <table>
+    <thead><tr><th class="doc"><h1>apiResponseExample_test.go</h1></th><th class="code"></th></tr></thead>
+    <tbody>
+      
+      <tr class="section">
+	<td class="doc"><h1>Unit Tests for apiUtility.</h1>
+</td>
+	<td class="code"><pre><code><div class="keyword">package</div> <div class="ident">api</div><div class="operator"></div>
+
+</code></pre></td>
+      </tr>
+      
+      <tr class="section">
+	<td class="doc"><p>Imports needed for this test:</p>
+</td>
+	<td class="code"><pre><code><div class="keyword">import</div> <div class="operator">(</div>
+	<div class="literal">&#34;fmt&#34;</div><div class="operator"></div>
+<div class="operator">)</div><div class="operator"></div>
+
+</code></pre></td>
+      </tr>
+      
+      <tr class="section">
+	<td class="doc"><h2>stationMonitor.go Response Objects</h2>
+</td>
+	<td class="code"><pre><code>
+
+<div class="keyword">func</div> <div class="ident">ExampleJourneyResponseObject</div><div class="operator">(</div><div class="operator">)</div><div class="operator">{</div>	
+	<div class="keyword">var</div> <div class="ident">ResponseObjecct</div> <div class="ident">Journey</div><div class="operator"></div>
+	<div class="keyword">var</div> <div class="ident">errorMessage</div> <div class="operator">=</div><div class="operator">[</div><div class="operator">]</div><div class="ident">byte</div><div class="operator">(</div><div class="literal">`&lt;errordescription&gt;Could not parse parameter &#34;2563&#34; as date&lt;/errordescription&gt;`</div><div class="operator">)</div><div class="operator"></div>
+	<div class="keyword">var</div> <div class="ident">responseObjectFromStationMonitor</div> <div class="operator">=</div><div class="operator">[</div><div class="operator">]</div><div class="ident">byte</div><div class="operator">(</div><div class="literal">`{
+			&#34;ticker&#34;: &#34;*** A ticker for this Response Object ****** another ticker ***&#34;,
+			&#34;listOfDepartures&#34;: [{
+				&#34;time&#34;: &#34;14:58&#43;1&#34;,
+				&#34;status&#34;: &#34;OK&#34;,
+				&#34;direction&#34;: &#34;Weinheim - Mannheim&#34;,
+				&#34;platform&#34;: &#34;C&#34;,
+				&#34;transportation&#34;: &#34;STRAB&#34;,
+				&#34;tourId&#34;: &#34;41282-33671-1&#34;,
+				&#34;kindOfTour&#34;: &#34;454AUS&#34;,
+				&#34;positionInTour&#34;: &#34;38&#34;,
+				&#34;statusNote&#34;: &#34;&#34;,
+				&#34;lineId&#34;: &#34;RNV005_RNV005A&#34;,
+				&#34;lineLabel&#34;: &#34;5&#34;,
+				&#34;differenceTime&#34;: &#34;0&#34;,
+				&#34;foreignLine&#34;: &#34;false&#34;,
+				&#34;newsAvailable&#34;: &#34;false&#34;			
+			}],
+			&#34;pastRequestText&#34;: &#34;n/a&#34;,
+			&#34;updateTime&#34;: &#34;0&#34;,
+			&#34;updateIterations&#34;: &#34;0&#34;,
+			&#34;stationInfos&#34;: [],
+			&#34;time&#34;: &#34;14:57&#34;,
+			&#34;icon&#34;: &#34;icon_tram.png&#34;,
+			&#34;label&#34;: &#34;Richtung &#34;,
+			&#34;color&#34;: &#34;002a4e&#34;,
+			&#34;shortLabel&#34;: &#34;n/a&#34;,
+			&#34;projectedTime&#34;: &#34;n/a&#34;,
+			&#34;otherTimes&#34;: [],
+			&#34;otherProjectedTimes&#34;: []
+		}`</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">err</div><div class="operator">:=</div> <div class="ident">parseResponseObject</div><div class="operator">(</div><div class="ident">errorMessage</div><div class="operator">,</div> <div class="operator">&amp;</div><div class="ident">ResponseObjecct</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">fmt</div><div class="operator">.</div><div class="ident">Println</div><div class="operator">(</div><div class="ident">err</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">err</div><div class="operator">=</div> <div class="ident">parseResponseObject</div><div class="operator">(</div><div class="ident">responseObjectFromStationMonitor</div><div class="operator">,</div> <div class="operator">&amp;</div><div class="ident">ResponseObjecct</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">fmt</div><div class="operator">.</div><div class="ident">Println</div><div class="operator">(</div><div class="ident">err</div><div class="operator">)</div><div class="operator"></div>
+</code></pre></td>
+      </tr>
+      
+      <tr class="section">
+	<td class="doc"><p>fmt.Println(ResponseObjecct) todo implement to string method
+fmt.Println(ResponseObjecct.SplitMultipleTicker()) // todo fix this [ &quot; A ticker for this Response Object &quot; &quot; another ticker &quot;]</p>
+</td>
+	<td class="code"><pre><code>	<div class="ident">fmt</div><div class="operator">.</div><div class="ident">Println</div><div class="operator">(</div><div class="ident">ResponseObjecct</div><div class="operator">.</div><div class="ident">ListOfDepartures</div><div class="operator">[</div><div class="literal">0</div><div class="operator">]</div><div class="operator">.</div><div class="ident">IsRealtimeData</div><div class="operator">(</div><div class="operator">)</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">fmt</div><div class="operator">.</div><div class="ident">Println</div><div class="operator">(</div><div class="ident">ResponseObjecct</div><div class="operator">.</div><div class="ident">ListOfDepartures</div><div class="operator">[</div><div class="literal">0</div><div class="operator">]</div><div class="operator">.</div><div class="ident">IsForeignLine</div><div class="operator">(</div><div class="operator">)</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">fmt</div><div class="operator">.</div><div class="ident">Println</div><div class="operator">(</div><div class="ident">ResponseObjecct</div><div class="operator">.</div><div class="ident">ListOfDepartures</div><div class="operator">[</div><div class="literal">0</div><div class="operator">]</div><div class="operator">.</div><div class="ident">IsBus</div><div class="operator">(</div><div class="operator">)</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">fmt</div><div class="operator">.</div><div class="ident">Println</div><div class="operator">(</div><div class="ident">ResponseObjecct</div><div class="operator">.</div><div class="ident">ListOfDepartures</div><div class="operator">[</div><div class="literal">0</div><div class="operator">]</div><div class="operator">.</div><div class="ident">IsTram</div><div class="operator">(</div><div class="operator">)</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">fmt</div><div class="operator">.</div><div class="ident">Println</div><div class="operator">(</div><div class="ident">ResponseObjecct</div><div class="operator">.</div><div class="ident">ListOfDepartures</div><div class="operator">[</div><div class="literal">0</div><div class="operator">]</div><div class="operator">.</div><div class="ident">GetGTFSExtendedRouteType</div><div class="operator">(</div><div class="operator">)</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">fmt</div><div class="operator">.</div><div class="ident">Println</div><div class="operator">(</div><div class="ident">ResponseObjecct</div><div class="operator">.</div><div class="ident">ListOfDepartures</div><div class="operator">[</div><div class="literal">0</div><div class="operator">]</div><div class="operator">.</div><div class="ident">IsCancelled</div><div class="operator">(</div><div class="operator">)</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">fmt</div><div class="operator">.</div><div class="ident">Println</div><div class="operator">(</div><div class="ident">ResponseObjecct</div><div class="operator">.</div><div class="ident">ListOfDepartures</div><div class="operator">[</div><div class="literal">0</div><div class="operator">]</div><div class="operator">.</div><div class="ident">AreNewsAvailable</div><div class="operator">(</div><div class="operator">)</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">fmt</div><div class="operator">.</div><div class="ident">Println</div><div class="operator">(</div><div class="operator">*</div><div class="ident">ResponseObjecct</div><div class="operator">.</div><div class="ident">ListOfDepartures</div><div class="operator">[</div><div class="literal">0</div><div class="operator">]</div><div class="operator">.</div><div class="ident">GetDelayIfRealtime</div><div class="operator">(</div><div class="operator">)</div><div class="operator">)</div><div class="operator"></div>
+	<div class="ident">fmt</div><div class="operator">.</div><div class="ident">Println</div><div class="operator">(</div><div class="ident">ResponseObjecct</div><div class="operator">.</div><div class="ident">ListOfDepartures</div><div class="operator">[</div><div class="literal">0</div><div class="operator">]</div><div class="operator">.</div><div class="ident">GetRNVGTFSRouteId</div><div class="operator">(</div><div class="operator">)</div><div class="operator">)</div><div class="operator"></div>
+</code></pre></td>
+      </tr>
+      
+      <tr class="section">
+	<td class="doc"><p>Output:
+<errordescription>Could not parse parameter &quot;2563&quot; as date</errordescription>
+<nil>
+true
+false
+false
+true
+900
+false
+false
+1
+5</p>
+</td>
+	<td class="code"><pre><code>	
+<div class="operator">}</div><div class="operator"></div>
+</code></pre></td>
+      </tr>
+      
+    </tbody>
+  </table>
+</div>
+</body>
+</html>
